@@ -1,0 +1,52 @@
+# Single source of truth for sim_flip
+# Units:
+# - angles: rad (unless *_deg explicitly)
+# - forces: N, moments: N*m
+# - added-mass terms: kg (X_udot, Z_wdot), kg*m^2 (M_qdot)
+# - damping: d_q [N*m*s/rad], d_q_abs [N*m*s^2/rad^2]
+
+constants:
+  rho: 997.561
+  g: 9.81
+  A_ref: 0.0056745
+  L_ref: 0.625
+
+rigid_body:
+  m_dry: 2.55
+  m_water_inner: 0.21
+  m_wet: 2.76
+  Iyy: 0.05741
+  I_water_inner: 0.01119
+
+added_mass_outer:
+  X_udot_outer: -0.0806
+  Z_wdot_outer: -3.54
+  M_qdot_outer: -0.115
+
+buoyancy_restore:
+  # NOTE: this file stores buoyancy as equivalent mass; simulation uses B_force = B_mass*g
+  B_mass: 2.555
+  x_b: 0.02535
+  z_b: 0.0
+
+permeability:
+  # nominal values (engineering prior); mu_theta_min comes from Step2 conservative bound
+  mu_x: 0.95
+  mu_z: 0.20
+  mu_theta: 0.5766
+  mu_theta_min: 0.5738
+  mu_theta_max: 1.0
+
+damping:
+  # From dqcalc Step3 (cycle-energy NNLS) notebook output snapshot.
+  d_q: 0.003420
+  d_q_abs: 0.358044
+
+cable:
+  enabled: true
+  K_cable: 0.048787
+  theta_eq_deg: 90.0
+
+numerics:
+  V_eps: 0.01
+  alpha_hold_when_V_small: false  # if false: alpha=0 when V<V_eps
