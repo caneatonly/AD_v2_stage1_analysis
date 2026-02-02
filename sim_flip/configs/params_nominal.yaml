@@ -25,7 +25,7 @@ added_mass_outer:
 
 buoyancy_restore:
   # NOTE: this file stores buoyancy as equivalent mass; simulation uses B_force = B_mass*g
-  B_mass: 2.555
+  B_mass: 2.55
   x_b: 0.02535
   z_b: 0.0
 
@@ -43,7 +43,7 @@ damping:
   d_q_abs: 0.358044
 
 cable:
-  enabled: true
+  enabled: false
   K_cable: 0.048787
   theta_eq_deg: 90.0
 

@@ -40,3 +40,14 @@ then **do not** add a separate theoretical Munk moment term.
 ## Next steps (first milestone)
 - Implement the 3-DOF ODE RHS and direction sanity tests.
 - Run baseline flip scenarios S0/S1/S2 and output metrics ($t_{80}$, $\theta_{max}$, $q_{max}$).
+
+## Quick run (baseline, no thruster)
+Install dependencies from `sim_flip/requirements.txt`, then run:
+
+```bash
+python sim_flip/scripts/run_flip_baseline.py
+```
+
+Outputs:
+- `sim_flip/outputs/baseline_timeseries.csv`
+- `sim_flip/outputs/baseline_metrics.json`
