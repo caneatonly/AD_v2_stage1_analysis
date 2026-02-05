@@ -1,3 +1,4 @@
+# 该脚本定义了用于计算水下航行器运动学参数的函数和数据结构。
 from __future__ import annotations
 
 import math

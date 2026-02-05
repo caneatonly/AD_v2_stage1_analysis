@@ -17,37 +17,37 @@ class FlipState:
     q: float
     theta: float
 
-
+# 状态诊断数据类，包含模拟过程中各个时间点的状态和力矩信息
 @dataclass(frozen=True)
 class FlipDiagnostics:
-    t: float
-    u: float
-    w: float
-    q: float
-    theta: float
-    theta_deg: float
-    V: float
-    Q: float
-    alpha_raw_deg: float
-    alpha_deg: float
-    Cx: float
-    Cz: float
-    Cm: float
-    X_cfd: float
-    Z_cfd: float
-    M_cfd: float
-    M_damp: float
-    M_bg: float
-    M_cable: float
-    T: float
-    M_thruster: float
+    t: float # 时间 s
+    u: float # 前向速度 m/s
+    w: float # 垂向速度 m/s
+    q: float # 角速度 rad/s
+    theta: float # 俯仰角 rad
+    theta_deg: float # 俯仰角度 deg
+    V: float # 速度幅值 m/s
+    Q: float # 动压 Pa
+    alpha_raw_deg: float # 未限幅攻角 deg
+    alpha_deg: float # 限幅后攻角 deg
+    Cx: float # 阻力系数
+    Cz: float # 升力系数
+    Cm: float # 助航矩系数
+    X_cfd: float # CFD计算的X方向力 N
+    Z_cfd: float # CFD计算的Z方向力 N
+    M_cfd: float # CFD计算的力矩 N·m
+    M_damp: float # 阻尼力矩 N·m
+    M_bg: float # 浮力重力力矩 N·m
+    M_cable: float # 缆绳力矩 N·m
+    T: float # 推进器推力 N
+    M_thruster: float # 推进器力矩 N·m
 
 
 @dataclass(frozen=True)
 class SimulationResult:
-    t: Iterable[float]
-    y: Iterable[Iterable[float]]
-    data: "DataFrame"
+    t: Iterable[float]  # 求解器输出的时间序列（对应 t_eval，单位 s）。
+    y: Iterable[Iterable[float]] # 求解器输出的状态变量时间序列数组，形状为 (4, len(t))。 y=[u,w,q,θ] 
+    data: "DataFrame" 
     events: dict
     success: bool
     status: int
@@ -352,7 +352,23 @@ def simulate(
     if dt_out <= 0:
         raise ValueError("dt_out must be positive")
 
-    t_eval = np.arange(t0, tf + 0.5 * dt_out, dt_out)
+    # Build t_eval robustly: never allow points outside t_span (SciPy raises).
+    # np.arange can overshoot tf due to floating-point rounding.
+    if tf == t0:
+        t_eval = np.array([t0], dtype=float)
+    else:
+        direction = 1.0 if tf > t0 else -1.0
+        span = abs(tf - t0)
+        n = int(np.floor(span / dt_out))
+        base = t0 + direction * dt_out * np.arange(n + 1, dtype=float)
+        # Ensure we include tf exactly as the final point.
+        if (direction > 0 and base[-1] < tf) or (direction < 0 and base[-1] > tf):
+            t_eval = np.concatenate([base, np.array([tf], dtype=float)])
+        else:
+            t_eval = base
+
+        lo, hi = (t0, tf) if t0 <= tf else (tf, t0)
+        t_eval = np.clip(t_eval, lo, hi)
 
     try:
         from scipy.integrate import solve_ivp
@@ -376,7 +392,7 @@ def simulate(
         y = sol.y[:, i]
         diag = evaluate_diagnostics(
             t=float(t),
-            y=y,
+            y=y, # 状态变量数组 [u,w,q,θ]
             params=params,
             cfd=cfd,
             alpha_prev_deg=alpha_hold,

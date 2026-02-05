@@ -43,7 +43,7 @@ damping:
   d_q_abs: 0.358044
 
 cable:
-  enabled: false
+  enabled: true
   K_cable: 0.048787
   theta_eq_deg: 90.0
 

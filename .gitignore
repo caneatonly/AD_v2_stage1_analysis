@@ -1,3 +1,5 @@
 figures/
 __pycache__/
 .gitkeep
+data/
+outputs/
