@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import math
 from dataclasses import dataclass
@@ -17,36 +17,36 @@ class FlipState:
     q: float
     theta: float
 
-# 状态诊断数据类，包含模拟过程中各个时间点的状态和力矩信息
+# 鐘舵€佽瘖鏂暟鎹被锛屽寘鍚ā鎷熻繃绋嬩腑鍚勪釜鏃堕棿鐐圭殑鐘舵€佸拰鍔涚煩淇℃伅
 @dataclass(frozen=True)
 class FlipDiagnostics:
-    t: float # 时间 s
-    u: float # 前向速度 m/s
-    w: float # 垂向速度 m/s
-    q: float # 角速度 rad/s
-    theta: float # 俯仰角 rad
-    theta_deg: float # 俯仰角度 deg
-    V: float # 速度幅值 m/s
-    Q: float # 动压 Pa
-    alpha_raw_deg: float # 未限幅攻角 deg
-    alpha_deg: float # 限幅后攻角 deg
-    Cx: float # 阻力系数
-    Cz: float # 升力系数
-    Cm: float # 助航矩系数
-    X_cfd: float # CFD计算的X方向力 N
-    Z_cfd: float # CFD计算的Z方向力 N
-    M_cfd: float # CFD计算的力矩 N·m
-    M_damp: float # 阻尼力矩 N·m
-    M_bg: float # 浮力重力力矩 N·m
-    M_cable: float # 缆绳力矩 N·m
-    T: float # 推进器推力 N
-    M_thruster: float # 推进器力矩 N·m
+    t: float # 鏃堕棿 s
+    u: float # 鍓嶅悜閫熷害 m/s
+    w: float # 鍨傚悜閫熷害 m/s
+    q: float # 瑙掗€熷害 rad/s
+    theta: float # 淇话瑙?rad
+    theta_deg: float # 淇话瑙掑害 deg
+    V: float # 閫熷害骞呭€?m/s
+    Q: float # 鍔ㄥ帇 Pa
+    alpha_raw_deg: float # 鏈檺骞呮敾瑙?deg
+    alpha_deg: float # 闄愬箙鍚庢敾瑙?deg
+    Cx: float # 闃诲姏绯绘暟
+    Cz: float # 鍗囧姏绯绘暟
+    Cm: float # 鍔╄埅鐭╃郴鏁?
+    X_cfd: float # CFD璁＄畻鐨刋鏂瑰悜鍔?N
+    Z_cfd: float # CFD璁＄畻鐨刏鏂瑰悜鍔?N
+    M_cfd: float # CFD璁＄畻鐨勫姏鐭?N路m
+    M_damp: float # 闃诲凹鍔涚煩 N路m
+    M_bg: float # 娴姏閲嶅姏鍔涚煩 N路m
+    M_cable: float # 缂嗙怀鍔涚煩 N路m
+    T: float # 鎺ㄨ繘鍣ㄦ帹鍔?N
+    M_thruster: float # 鎺ㄨ繘鍣ㄥ姏鐭?N路m
 
 
 @dataclass(frozen=True)
 class SimulationResult:
-    t: Iterable[float]  # 求解器输出的时间序列（对应 t_eval，单位 s）。
-    y: Iterable[Iterable[float]] # 求解器输出的状态变量时间序列数组，形状为 (4, len(t))。 y=[u,w,q,θ] 
+    t: Iterable[float]  # 姹傝В鍣ㄨ緭鍑虹殑鏃堕棿搴忓垪锛堝搴?t_eval锛屽崟浣?s锛夈€?
+    y: Iterable[Iterable[float]] # 姹傝В鍣ㄨ緭鍑虹殑鐘舵€佸彉閲忔椂闂村簭鍒楁暟缁勶紝褰㈢姸涓?(4, len(t))銆?y=[u,w,q,胃] 
     data: "DataFrame" 
     events: dict
     success: bool
@@ -150,7 +150,6 @@ def _compute_forces_and_moments(
     M_cfd = kin.Q * A_ref * L_ref * Cm
 
     m_dry = float(rb["m_dry"])
-    m_wet = float(rb["m_wet"])
     W_force = m_dry * g
     B_force = float(buoy["B_mass"]) * g
 
@@ -176,17 +175,18 @@ def _compute_forces_and_moments(
     M_cable = 0.0
     if bool(cable["enabled"]):
         K_cable = float(cable["K_cable"])
-        M_cable = -K_cable * (theta - _theta_eq_rad(params))
+        C_cable_q = float(cable.get("C_cable_q", 0.0))
+        M_cable = -K_cable * (theta - _theta_eq_rad(params)) - C_cable_q * q
 
     u_dot = (
-        -(m_dry - totals.Z_wdot_total) * w * q
+        -eff.m_z * w * q
         + X_cfd
         - W_minus_B * math.sin(theta)
         + T
     ) / eff.m_x
 
     w_dot = (
-        +(m_dry - totals.X_udot_total) * u * q
+        +eff.m_x * u * q
         + Z_cfd
         + W_minus_B * math.cos(theta)
     ) / eff.m_z
@@ -392,7 +392,7 @@ def simulate(
         y = sol.y[:, i]
         diag = evaluate_diagnostics(
             t=float(t),
-            y=y, # 状态变量数组 [u,w,q,θ]
+            y=y, # 鐘舵€佸彉閲忔暟缁?[u,w,q,胃]
             params=params,
             cfd=cfd,
             alpha_prev_deg=alpha_hold,
@@ -418,3 +418,5 @@ def simulate(
         status=int(sol.status),
         message=str(sol.message),
     )
+
+

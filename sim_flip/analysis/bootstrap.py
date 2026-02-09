@@ -13,6 +13,8 @@ class BootstrapSummary:
     n_total: int
     params_mean: dict[str, float]
     params_ci95: dict[str, tuple[float, float]]
+    params_corr: dict[str, dict[str, float]]
+    samples: list[dict[str, float]]
 
 
 def _block_bootstrap_1d(x: np.ndarray, block_len: int, rng: np.random.Generator) -> np.ndarray:
@@ -70,10 +72,17 @@ def bootstrap_fit_segments(
         )
         for c in df.columns
     }
+    corr = df.corr(numeric_only=True).fillna(0.0)
+    corr_dict = {
+        c: {cc: float(corr.loc[c, cc]) for cc in corr.columns}
+        for c in corr.columns
+    }
+
     return BootstrapSummary(
         n_success=int(len(df)),
         n_total=int(n_boot),
         params_mean=mean,
         params_ci95=ci95,
+        params_corr=corr_dict,
+        samples=[{k: float(v) for k, v in r.items()} for r in df.to_dict(orient="records")],
     )
-

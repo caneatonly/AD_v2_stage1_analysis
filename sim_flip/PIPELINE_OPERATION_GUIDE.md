@@ -150,7 +150,14 @@ Global:
 - Manifest auto update:
   - `sim_flip/configs/experiment_manifest.csv`
 - Identification outputs:
-  - `sim_flip/results/identification/`
+  - `sim_flip/results/identification/{run_id}/identified_params.json`
+  - `sim_flip/results/identification/{run_id}/identified_params.yaml`
+  - `sim_flip/results/identification/{run_id}/multistart_convergence.csv`
+  - `sim_flip/results/identification/{run_id}/bootstrap_*.{json,csv,png}` (when `bootstrap.n_boot > 0`)
+  - `sim_flip/results/identification/{run_id}/protocol_snapshot.yaml`
+  - `sim_flip/results/identification/{run_id}/git_commit.txt`
+  - `sim_flip/results/identification/{run_id}/python_env.txt`
+  - `sim_flip/results/identification/identification_summary.csv`
 - Sim-real evaluation outputs:
   - `sim_flip/results/sim_real_eval/`
 - Sensitivity outputs:
@@ -354,4 +361,3 @@ python sim_flip/scripts/run_sim_real_eval.py --eval-split-tags test --cv-fold ho
 python sim_flip/scripts/run_sensitivity_suite.py
 python sim_flip/scripts/build_paper_figures.py
 ```
-

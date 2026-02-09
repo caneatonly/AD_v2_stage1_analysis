@@ -42,6 +42,7 @@ Out of scope:
 - Run QC JSON: `sim_flip/data/derived/run_csv/{run_id}_qc.json`
 - Segment CSV: `sim_flip/data/derived/segments/{segment_id}.csv`
 - Segment metadata: `sim_flip/data/derived/segments/{run_id}_segments.json`
+- Identification per-run artifacts: `sim_flip/results/identification/{run_id}/`
 
 ### Control files
 
@@ -106,6 +107,7 @@ No runtime auto-completion from 0..90 is allowed.
 
 - Identification:
   - `python sim_flip/scripts/run_identification_cv.py`
+  - Bootstrap is enabled when `bootstrap.n_boot > 0` in `sim_flip/configs/id_protocol.yaml`
 - Sim-real evaluation:
   - `python sim_flip/scripts/run_sim_real_eval.py`
 - Sensitivity:
@@ -161,4 +163,3 @@ sim_flip/
 - Legacy notebook files are kept for analysis/reference, but authoritative logic is in `sim_flip/analysis/`.
 - Legacy script `sim_flip/scripts/sim_real_compare_multi.py` has been removed intentionally.
 - For day-to-day execution and experiment operation details, use `sim_flip/PIPELINE_OPERATION_GUIDE.md`.
-

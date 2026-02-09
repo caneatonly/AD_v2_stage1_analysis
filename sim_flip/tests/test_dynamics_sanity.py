@@ -1,7 +1,8 @@
-import unittest
+﻿import unittest
 
+from sim_flip.src.added_mass import compute_from_param_tree
 from sim_flip.src.cfd_table import load_default_cfd_interpolator
-from sim_flip.src.dynamics import evaluate_diagnostics
+from sim_flip.src.dynamics import build_rhs, evaluate_diagnostics
 
 
 class TestDynamicsSanity(unittest.TestCase):
@@ -47,6 +48,43 @@ class TestDynamicsSanity(unittest.TestCase):
         self.assertEqual(diag.X_cfd, 0.0)
         self.assertEqual(diag.Z_cfd, 0.0)
         self.assertEqual(diag.M_cfd, 0.0)
+
+    def test_inertial_coupling_uses_eff_masses(self) -> None:
+        params = {
+            **self.params,
+            "constants": {**self.params["constants"], "A_ref": 0.0},  # remove CFD force coupling
+            "buoyancy_restore": {"B_mass": self.params["rigid_body"]["m_dry"], "x_b": 0.0, "z_b": 0.0},
+            "permeability": {"mu_x": 1.0, "mu_z": 0.0, "mu_theta": 0.0},
+        }
+        rhs = build_rhs(params=params, cfd=self.cfd)
+        # pick nonzero u,w,q so coupling terms are active
+        u, w, q, theta = 0.8, -0.5, 0.7, 0.0
+        u_dot, w_dot, _, _ = rhs(0.0, [u, w, q, theta])
+
+        _, eff = compute_from_param_tree(params)
+        exp_u_dot = -(eff.m_z * w * q) / eff.m_x
+        exp_w_dot = +(eff.m_x * u * q) / eff.m_z
+        self.assertAlmostEqual(u_dot, exp_u_dot, places=12)
+        self.assertAlmostEqual(w_dot, exp_w_dot, places=12)
+
+    def test_cable_damping_term_affects_q_dot(self) -> None:
+        params = {
+            **self.params,
+            "constants": {**self.params["constants"], "A_ref": 0.0},
+            "buoyancy_restore": {"B_mass": self.params["rigid_body"]["m_dry"], "x_b": 0.0, "z_b": 0.0},
+            "cable": {
+                "enabled": True,
+                "K_cable": 0.0,
+                "C_cable_q": 2.5,
+                "theta_eq_deg": 0.0,
+            },
+        }
+        rhs = build_rhs(params=params, cfd=self.cfd)
+        u, w, q, theta = 0.0, 0.0, 0.6, 0.0
+        _, _, q_dot, _ = rhs(0.0, [u, w, q, theta])
+        _, eff = compute_from_param_tree(params)
+        expected = -(2.5 * q) / eff.I_y
+        self.assertAlmostEqual(q_dot, expected, places=12)
 
 
 if __name__ == "__main__":

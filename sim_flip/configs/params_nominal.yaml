@@ -1,4 +1,4 @@
-# Single source of truth for sim_flip
+﻿# Single source of truth for sim_flip
 # Units:
 # - angles: rad (unless *_deg explicitly)
 # - forces: N, moments: N*m
@@ -45,8 +45,10 @@ damping:
 cable:
   enabled: true
   K_cable: 0.048787
+  C_cable_q: 0.0
   theta_eq_deg: 90.0
 
 numerics:
   V_eps: 0.01
   alpha_hold_when_V_small: false  # if false: alpha=0 when V<V_eps
+
