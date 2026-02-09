@@ -62,6 +62,7 @@ $$ \dot\theta = q $$
   - `params_nominal.yaml`：单一真源（常量、质量、惯量、added mass、阻尼、渗透率、浮力、线缆、数值参数）。
 - `data/`
   - `cfd_table_clean.csv`：CFD 静态系数表（`alpha_deg, Cx, Cz, Cm`）。
+  - 其他实验数据集
 - `src/`
   - `dynamics.py`：RHS/积分封装/诊断输出（核心）。
   - `cfd_table.py`：查表与插值、Rule-B 折叠/符号规则。
@@ -146,7 +147,7 @@ python sim_flip/scripts/run_cable_compare.py
 
 ### M2（实验对比与外推验证）
 - `sim_real_cpmpare.ipynb`：对 seg0 等实验段做对比。
-- 重要原则：
+- 重要原则：20
   - 若参数来自同一段数据（in-sample），只说明拟合自洽；需 seg1/seg2 做 out-of-sample 验证。
 
 ### M3（推进器“晚介入”策略仿真）
