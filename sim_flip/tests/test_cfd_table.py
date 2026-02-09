@@ -73,19 +73,19 @@ class TestCfdTable(unittest.TestCase):
                 y_got = itp.coeffs(amid)[series_idx]
                 self.assertAlmostEqual(y_got, y_expect, places=12)
 
-    def test_rule_b_alpha_over_90(self):
-        """alpha=110 should fold to 70 with your specified sign rules."""
+    def test_full_range_contract(self):
+        table = load_cfd_table(default_cfd_table_path())
+        self.assertLessEqual(table.alpha_deg[0], 0.0)
+        self.assertGreaterEqual(table.alpha_deg[-1], 180.0)
 
+    def test_positive_over_90_uses_direct_table(self):
         table = load_cfd_table(default_cfd_table_path())
         itp = CfdInterpolator.from_table(table, method="pchip")
-
-        # Reference at 70 deg (exists in table).
-        cx70, cz70, cm70 = itp.coeffs(70.0)
-        # Rule: alpha>90 => Cx flips, Cz unchanged, Cm flips; fold 110->70.
-        cx, cz, cm = itp.coeffs_extended(110.0)
-        self.assertAlmostEqual(cx, -cx70, places=12)
-        self.assertAlmostEqual(cz, cz70, places=12)
-        self.assertAlmostEqual(cm, -cm70, places=12)
+        c_direct = itp.coeffs(110.0)
+        c_ext = itp.coeffs_extended(110.0)
+        self.assertAlmostEqual(c_direct[0], c_ext[0], places=12)
+        self.assertAlmostEqual(c_direct[1], c_ext[1], places=12)
+        self.assertAlmostEqual(c_direct[2], c_ext[2], places=12)
 
     def test_rule_b_negative_alpha(self):
         """alpha=-20 uses abs(alpha)=20 for lookup, with Cz and Cm sign flips."""
@@ -100,18 +100,14 @@ class TestCfdTable(unittest.TestCase):
         self.assertAlmostEqual(cz, -cz20, places=12)
         self.assertAlmostEqual(cm, -cm20, places=12)
 
-    def test_rule_b_negative_and_over_90(self):
-        """alpha=-110 => abs->110 then fold->70; combined sign rules apply."""
-
+    def test_rule_b_negative_over_90(self):
         table = load_cfd_table(default_cfd_table_path())
         itp = CfdInterpolator.from_table(table, method="pchip")
-
-        cx70, cz70, cm70 = itp.coeffs(70.0)
+        cx110, cz110, cm110 = itp.coeffs(110.0)
         cx, cz, cm = itp.coeffs_extended(-110.0)
-        # alpha<0: Cz-, Cm-; alpha>90: Cx-, Cm- (so Cm becomes + overall).
-        self.assertAlmostEqual(cx, -cx70, places=12)
-        self.assertAlmostEqual(cz, -cz70, places=12)
-        self.assertAlmostEqual(cm, cm70, places=12)
+        self.assertAlmostEqual(cx, cx110, places=12)
+        self.assertAlmostEqual(cz, -cz110, places=12)
+        self.assertAlmostEqual(cm, -cm110, places=12)
 
 
 if __name__ == "__main__":

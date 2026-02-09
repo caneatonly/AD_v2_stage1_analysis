@@ -46,45 +46,26 @@ def _wrap_to_180_deg(alpha_deg: float) -> float:
 def map_alpha_rule_b(alpha_raw_deg: float) -> tuple[float, float, float, float]:
     """Map raw alpha to lookup alpha and coefficient sign multipliers.
 
-    Rule B (as confirmed):
-    - Use B1 folding so lookup alpha stays in [0, 90].
-    - If alpha < 0: first take abs(alpha) for lookup, but apply Cz and Cm sign flip.
-      (Cx unchanged)
-    - If (after abs) alpha > 90: fold via alpha <- 180 - alpha, and apply:
-      Cx sign flip, Cm sign flip. (Cz unchanged)
-
-    Returns: (alpha_lut_deg, sCx, sCz, sCm)
-    where coefficients should be transformed as:
-      Cx' = sCx * Cx(alpha_lut)
-      Cz' = sCz * Cz(alpha_lut)
-      Cm' = sCm * Cm(alpha_lut)
+    Runtime contract is now full-angle 0..180 lookup table.
+    For negative alpha, use abs(alpha) for lookup and keep historical flips:
+      - Cz flips sign
+      - Cm flips sign
+      - Cx unchanged
+    For positive alpha in [0, 180], no additional sign transform is applied.
     """
 
     a = _wrap_to_180_deg(alpha_raw_deg)
-
     sCx = 1.0
     sCz = 1.0
     sCm = 1.0
 
     if a < 0.0:
-        # alpha<0 rule: Cz and Cm flip, Cx unchanged.
         sCz *= -1.0
         sCm *= -1.0
         a = abs(a)
 
-    # Now a in [0, 180].
-    if a > 90.0:
-        # alpha>90 rule: Cx flips, Cm flips, Cz unchanged; fold to [0,90].
-        sCx *= -1.0
-        sCm *= -1.0
-        a = 180.0 - a
-
-    # Numerical guard.
-    if a < 0.0:
-        a = 0.0
-    if a > 90.0:
-        a = 90.0
-
+    # Guard to lookup range.
+    a = min(max(float(a), 0.0), 180.0)
     return float(a), float(sCx), float(sCz), float(sCm)
 
 
@@ -356,4 +337,10 @@ def load_cfd_table(csv_path: Union[str, Path]) -> CfdTable:
 
 
 def load_default_cfd_interpolator(method: str = "pchip") -> CfdInterpolator:
-    return CfdInterpolator.from_csv(default_cfd_table_path(), method=method)
+    itp = CfdInterpolator.from_csv(default_cfd_table_path(), method=method)
+    if itp.alpha_min_deg > 0.0 or itp.alpha_max_deg < 180.0:
+        raise ValueError(
+            "Default CFD table must cover 0..180 deg for runtime contract; "
+            f"got [{itp.alpha_min_deg}, {itp.alpha_max_deg}]"
+        )
+    return itp

@@ -76,7 +76,7 @@ def compute_kinematics(
     """Compute (V, Q, alpha_raw_deg, alpha_deg).
 
     - alpha_raw_deg follows the frozen convention: atan2(w,u) in degrees.
-    - alpha_deg is the CFD lookup alpha after applying Rule-B folding/sign logic,
+    - alpha_deg is the CFD lookup alpha after applying runtime alpha mapping,
       then clamped to [alpha_min_deg, alpha_max_deg].
     """
 

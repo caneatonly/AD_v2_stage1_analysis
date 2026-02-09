@@ -1,0 +1,74 @@
+preprocess:
+  resample:
+    dt_s: 0.001
+    kind: quadratic
+  savgol:
+    window: 201
+    polyorder: 2
+  welch:
+    nperseg: 4096
+  butter:
+    order: 4
+    dom_freq_min_hz: 0.05
+    dom_freq_max_hz: 5.0
+    fallback_dom_freq_hz: 0.8
+    cutoff_multiplier: 5.0
+    cutoff_min_hz: 0.5
+    cutoff_max_hz: 15.0
+
+segmentation:
+  start_time_min_s: 0.0
+  max_segments_per_run: 12
+  min_peak_distance_s: 8.0
+  valley_prominence_deg: 0.5
+  min_segment_length_s: 8.0
+  stable_window_s: 2.0
+  stable_q_abs_max_rad_s: 0.05
+  stable_theta_std_max_deg: 0.5
+
+frequency_lock:
+  f_min_hz: 0.1
+  f_max_hz: 2.0
+  min_peak_distance_s: 0.4
+  peak_prominence_deg: 0.3
+  consistency_tol_hz: 0.2
+
+step3_energy:
+  min_cycle_amplitude_deg: 0.7
+  min_cycles: 12
+
+step4_ode:
+  lambda_omega: 1.0
+  init:
+    mu_theta: 0.6
+    d_q: 0.05
+    d_qq: 0.05
+    K_cable: 0.0
+  bounds:
+    mu_theta: [0.0, 1.0]
+    d_q: [0.0, 5.0]
+    d_qq: [0.0, 5.0]
+    K_cable: [0.0, 5.0]
+
+bootstrap:
+  n_boot: 0
+  block_s: 1.0
+  seed: 0
+
+gates:
+  hard_integrity:
+    enforce_schema: true
+    enforce_no_leakage: true
+    enforce_cfd_full_0_180: true
+  soft_performance:
+    median_taae_theta_deg_max: 5.0
+    median_tase_theta_deg_abs_max: 2.0
+    median_dt90_abs_s_max: 0.3
+
+split:
+  strategy: leave_one_theta_level_out
+  block_by_condition: true
+
+reproducibility:
+  random_seed: 0
+

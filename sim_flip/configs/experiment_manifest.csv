@@ -1,0 +1,1 @@
+run_id,segment_id,repeat_id,theta0_meas_deg,q0_meas_rad_s,t_start_s,t_end_s,segmentation_mode,split_tag,cv_fold,notes
