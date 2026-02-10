@@ -60,6 +60,10 @@ Each experiment record (one excitation -> one free-decay-to-stable process) is o
 
 `RYYYYMMDD_##.txt`
 
+Current project convention:
+- one txt = one independent excitation-decay experiment,
+- one run exports one primary segment (`max_segments_per_run: 1` in protocol).
+
 Examples:
 - `R20260209_01.txt`
 - `R20260209_02.txt`
@@ -89,8 +93,9 @@ For each `R*.txt`, the pipeline executes:
 6. Adaptive 4th-order Butterworth + `filtfilt` zero-phase filtering.
 7. Numerical differentiation of `q(t)` -> `q_dot(t)`.
 8. Auto lock-phase segmentation:
-   - start: valley phase locking,
+   - start: peak phase locking,
    - end: stability criterion.
+   - current protocol exports one segment per run (first valid lock-phase start).
 9. Export segment CSV files.
 10. Auto update `experiment_manifest.csv` with measured initial state and segment window.
 
@@ -322,7 +327,7 @@ Rules:
 ## 12. Common Failure Modes and Quick Fixes
 
 1. No segments detected:
-- relax `segmentation.valley_prominence_deg`,
+- relax peak prominence threshold (`segmentation.valley_prominence_deg`),
 - check raw signal quality and units,
 - manually override `t_start_s/t_end_s` in manifest.
 

@@ -63,13 +63,38 @@ def _save_manifest(path: str | Path, df: pd.DataFrame) -> None:
 
 
 def _detect_start_indices(theta_deg: np.ndarray, t_s: np.ndarray, protocol: dict[str, Any]) -> np.ndarray:
+    """Detect free-decay start points as peaks (theta > 90 deg).
+
+    Coordinate contract (enforced by ``raw_preprocess._principal_axis_from_angle_xy``):
+      The PCA sign convention guarantees that the excitation extremum
+      (the point of maximum deviation from equilibrium) is always
+      mapped to ``theta_lab > 0``, i.e. ``theta_deg > 90``.
+      Therefore the free-decay start is always a **peak** of theta_deg.
+
+    Why only peaks, not valleys:
+      - Valleys (theta < 90) are intermediate oscillation troughs
+        *during* the decay, not independent excitation start points.
+      - Detecting valleys would create overlapping segments from
+        the same decay process, inflating pseudo-sample count in
+        Step 3 energy identification.
+
+    The ``prominence`` threshold (``segmentation.valley_prominence_deg``
+    in protocol YAML -- name kept for backward compatibility) gates
+    how far above the local baseline a peak must rise to qualify.
+    """
     seg_cfg = protocol["segmentation"]
     fs = 1.0 / float(protocol["preprocess"]["resample"]["dt_s"])
     min_dist = int(max(1, float(seg_cfg["min_peak_distance_s"]) * fs))
     prominence = float(seg_cfg["valley_prominence_deg"])
-    peaks, _ = find_peaks(-theta_deg, distance=min_dist, prominence=prominence)
+
+    # Detect peaks only (theta > 90 side = excitation start points)
+    peaks, _ = find_peaks(theta_deg, distance=min_dist, prominence=prominence)
     if len(peaks) == 0:
-        raise RuntimeError("No valleys detected for lock-phase segmentation")
+        raise RuntimeError(
+            "No peaks detected for lock-phase segmentation.  "
+            "Check raw signal quality, PCA sign convention, "
+            "and segmentation.valley_prominence_deg."
+        )
 
     starts = []
     min_t = float(seg_cfg["start_time_min_s"])
@@ -77,7 +102,7 @@ def _detect_start_indices(theta_deg: np.ndarray, t_s: np.ndarray, protocol: dict
         if float(t_s[idx]) >= min_t:
             starts.append(int(idx))
     if not starts:
-        raise RuntimeError("Detected valleys exist but all before start_time_min_s gate")
+        raise RuntimeError("Detected peaks exist but all before start_time_min_s gate")
     return np.asarray(starts, dtype=int)
 
 

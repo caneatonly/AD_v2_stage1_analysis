@@ -62,14 +62,53 @@ def _load_raw_txt(path: str | Path) -> pd.DataFrame:
 
 
 def _principal_axis_from_angle_xy(angle_xy: np.ndarray) -> np.ndarray:
-    # SVD-based PCA first component, no sklearn dependency.
+    """SVD-based PCA first component with deterministic sign convention.
+
+    SVD/PCA has an inherent sign ambiguity: ``vt[0]`` and ``-vt[0]`` are
+    equally valid.  Without a sign convention the *same* physical motion
+    can produce opposite ``theta_lab_deg`` projections across different
+    data files, which in turn flips whether the first oscillation
+    extremum appears as a valley (< 90 deg) or a peak (> 90 deg).
+
+    Convention chosen here (deterministic):
+      Project *all* samples onto the candidate axis, then find the
+      sample with the **largest absolute projection** -- this is the
+      excitation peak, far from equilibrium, with the highest SNR.
+      If that projection is negative, flip the axis so the excitation
+      peak always maps to the *positive* side.
+
+      After the downstream mapping ``theta_deg = 90 + theta_lab_deg``,
+      this guarantees that the excitation peak satisfies ``theta > 90``
+      regardless of which physical direction the initial push was in.
+
+    Why *not* use the first sample:
+      In a typical free-decay experiment the recording starts *before*
+      the excitation is applied.  The first data points sit near the
+      equilibrium (projection ~ 0) where noise dominates, making the
+      sign effectively random -- exactly the failure mode we need to
+      prevent.
+
+    Downstream consequence:
+      Because excitation always maps to theta > 90 deg (peak), the
+      segmentation step (``segment_lock._detect_start_indices``) only
+      needs to call ``find_peaks(theta_deg)`` to locate the free-decay
+      start point.
+    """
     centered = angle_xy - np.mean(angle_xy, axis=0, keepdims=True)
     _, _, vt = np.linalg.svd(centered, full_matrices=False)
     axis = vt[0]
     norm = np.linalg.norm(axis)
     if norm <= 0.0:
         raise ValueError("PCA axis norm is zero")
-    return axis / norm
+    axis = axis / norm
+
+    # --- Deterministic sign: max-deviation sample projects to positive ---
+    proj = centered @ axis
+    idx_max_dev = int(np.argmax(np.abs(proj)))
+    if proj[idx_max_dev] < 0.0:
+        axis = -axis
+
+    return axis
 
 
 def _project_to_principal_axis(df_raw: pd.DataFrame) -> pd.DataFrame:

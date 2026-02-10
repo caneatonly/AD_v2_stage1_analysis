@@ -63,7 +63,7 @@ For each raw run txt:
 6. Adaptive 4th-order Butterworth + `filtfilt` zero-phase filtering.
 7. Differentiate `q(t)` to obtain `q_dot(t)`.
 8. Auto lock-phase segmentation:
-   - start at valley phase,
+   - start at peak phase,
    - end by stability criterion.
 9. Export segment CSV files.
 10. Update manifest rows (auto-detected mode; can be overridden).
