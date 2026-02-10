@@ -38,6 +38,11 @@ Detailed operation handbook:
 - Segment CSV: `sim_flip/data/derived/segments/{run_id}_S##.csv`
 - Manifest: `sim_flip/configs/experiment_manifest.csv`
 - Protocol: `sim_flip/configs/id_protocol.yaml`
+- Identification outputs (global fit):
+  - `sim_flip/results/identification/global/identified_params.{json,yaml}`
+  - `sim_flip/results/identification/global/selected_segments.csv`
+  - `sim_flip/results/identification/global/preprocess_status.csv`
+  - `sim_flip/results/identification/identification_summary.csv`
 
 ## Removed Legacy Script
 

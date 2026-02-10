@@ -52,6 +52,7 @@ def main() -> None:
     selected_ids = _select_eval_ids(manifest_path=args.manifest, split_tags=tags, cv_fold=args.cv_fold)
     if not selected_ids:
         print(f"[warn] no segment selected by split_tags={tags} cv_fold={args.cv_fold!r}; nothing to evaluate")
+        return
 
     rows = []
     for seg_path in sorted(args.segment_dir.glob("*_S*.csv")):

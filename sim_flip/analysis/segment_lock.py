@@ -48,7 +48,14 @@ def _load_manifest(path: str | Path) -> pd.DataFrame:
     for col in MANIFEST_COLUMNS:
         if col not in df.columns:
             df[col] = np.nan
-    return df[MANIFEST_COLUMNS].copy()
+    out = df[MANIFEST_COLUMNS].copy()
+    str_cols = ["run_id", "segment_id", "segmentation_mode", "split_tag", "cv_fold", "notes"]
+    for col in str_cols:
+        out[col] = out[col].fillna("").astype(str)
+    num_cols = ["repeat_id", "theta0_meas_deg", "q0_meas_rad_s", "t_start_s", "t_end_s"]
+    for col in num_cols:
+        out[col] = pd.to_numeric(out[col], errors="coerce")
+    return out
 
 
 def _save_manifest(path: str | Path, df: pd.DataFrame) -> None:
@@ -295,4 +302,3 @@ def segment_run_csv(
         metadata_json_path=meta_path,
         manifest_path=man_path,
     )
-
