@@ -1,0 +1,8 @@
+# Abstract
+
+Underwater corner reflectors are used as passive high-contrast markers for marine detection and localization tasks, and their deployment reliability depends on the carrier platform. This paper presents the design and characterization of a mission-oriented self-suspending underwater platform developed for corner-reflector deployment. The platform is required to pass through a horizontal-launch to vertical-stabilization transition before reaching its working posture; therefore, platform architecture, mass-buoyancy arrangement, and deployment workflow are treated as primary engineering contributions.
+
+For this transition phase, an anisotropic permeability-corrected 3-DOF dynamic model is developed with three physically interpretable coupling parameters, `mu_x`, `mu_z`, and `mu_theta`, to represent directional internal-water coupling effects. CFD-derived static hydrodynamic mappings are used as model evidence for force and moment replacement logic, while rotational damping is retained as an identification-oriented term. A closed validation chain is established through free-decay identification, out-of-sample simulation-to-experiment evaluation, and sensitivity-based envelope analysis.
+The identification and evaluation stages use consistent initialization and condition-level split rules to reduce leakage risk and support fair sim-real comparison.
+
+The resulting platform-model framework provides consistent reconstruction of transition behavior and practical guidance for deployment-oriented design and parameter selection. Conclusions are explicitly limited to the current geometry, mass distribution, and actuation strategy, and the workflow is organized for reproducibility through protocolized preprocessing and condition-level split control.

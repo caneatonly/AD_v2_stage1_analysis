@@ -3,3 +3,9 @@ __pycache__/
 .gitkeep
 data/
 outputs/
+
+# Keep paper-level figure planning docs versioned.
+!paper/figures/
+paper/figures/*
+!paper/figures/.gitkeep
+!paper/figures/FIGURE_REQUIREMENTS.md
