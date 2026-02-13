@@ -1,6 +1,6 @@
 Highlights
-- Mission-oriented self-suspending platform for corner-reflector deployment
-- 3-DOF anisotropic permeability-corrected dynamics with interpretable coupling terms
-- CFD used as a model-evidence bridge for static coefficient mapping and CP migration
-- Free-decay ID with protocolized splits and out-of-sample sim-real evaluation
-- Sensitivity envelopes for design margins and deployment strategy selection
+- Mission-oriented self-suspending platform for underwater marker deployment
+- Interpretable 3-DOF anisotropic permeability-corrected dynamics model
+- CFD-based mapping for force, moment, and pressure-center migration evidence
+- Free-decay identification with split-controlled sim-real validation
+- Sensitivity envelopes support robust deployment-strategy selection
