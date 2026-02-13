@@ -1,0 +1,6 @@
+Highlights
+- Mission-oriented self-suspending platform for corner-reflector deployment
+- 3-DOF anisotropic permeability-corrected dynamics with interpretable coupling terms
+- CFD used as a model-evidence bridge for static coefficient mapping and CP migration
+- Free-decay ID with protocolized splits and out-of-sample sim-real evaluation
+- Sensitivity envelopes for design margins and deployment strategy selection

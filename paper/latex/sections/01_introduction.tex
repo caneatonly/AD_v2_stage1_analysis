@@ -1,0 +1,19 @@
+% Converted from: paper/sections/01_introduction.md
+\section{Introduction}
+
+Underwater corner reflectors are commonly used as passive markers to improve target detectability and support localization-related marine operations. In practical deployment, reliability is determined not only by the payload itself but also by the carrier platform and its transition dynamics. In the scenario considered here, a dedicated platform is released in a near-horizontal posture and must autonomously stabilize to a near-vertical working posture. This horizontal-launch to vertical-stabilization phase is therefore a mission-critical process rather than a secondary motion detail.
+
+Existing underwater dynamics studies provide mature tools for hydrodynamic modeling and parameter identification, but many are developed either for general-purpose vehicles or as method-only investigations. For mission-specific deployment systems, this separation can be limiting because platform architecture, internal fluid coupling, and operational workflow are strongly coupled. In addition, parameter transferability across configurations becomes weak when large-attitude transition is intrinsic to operation. A practical framework should therefore combine platform design, physically interpretable dynamics, and experimentally grounded validation in a single workflow. This positioning follows the engineering narrative commonly seen in recent Ocean Engineering and Applied Ocean Research studies \citep{R2,R3,R4,R5,R6}.
+
+This work treats platform design and dynamic characterization as co-equal contributions. A mission-oriented self-suspending platform is designed and implemented with explicit constraints on structure, mass-buoyancy distribution, and deployment sequence. To model the key transition phase, an anisotropic permeability-corrected 3-DOF dynamic formulation is introduced. Three parameters, \texttt{mu\_x}, \texttt{mu\_z}, and \texttt{mu\_theta}, represent directional internal-water coupling in surge, heave, and pitch channels, providing a compact and physically interpretable correction to isotropic lumped treatments.
+
+To support model construction without shifting novelty to CFD alone, static CFD is used as a model-evidence bridge. Angle-dependent hydrodynamic mappings are employed for force/moment replacement logic and pressure-center migration interpretation, while rotational damping is retained as an identification-oriented term. Parameters are identified from free-decay tests under a protocolized workflow and then evaluated by out-of-sample simulation-to-experiment comparison and sensitivity-based envelope analysis. This closed chain connects physical plausibility, identifiability, and engineering utility.
+
+The contributions are threefold: (1) design, implementation, and experimental characterization of a mission-oriented self-suspending platform for underwater corner-reflector deployment; (2) a physically interpretable anisotropic permeability-corrected 3-DOF model for the launch-to-stabilization process; and (3) a closed evidence chain from identification to out-of-sample validation and sensitivity-based design implications. Conclusions are explicitly bounded to the current geometry, mass distribution, and actuation strategy. The remainder of this paper is organized as follows. Section~2 introduces the system and mission scenario. Section~3 presents the dynamic model. Section~4 reports CFD-to-model mapping evidence. Section~5 describes the identification protocol. Section~6 gives simulation-to-experiment validation results. Section~7 presents sensitivity and design implications. Section~8 concludes with limitations and future closed-loop depth-control work.
+
+\begin{figure}[htbp]
+  \centering
+  % TODO: Insert Fig. 1 here (see paper/figures/FIGURE_REQUIREMENTS.md).
+  \caption{Mission-oriented platform architecture and deployment workflow.}
+  \label{fig:mission-architecture}
+\end{figure}

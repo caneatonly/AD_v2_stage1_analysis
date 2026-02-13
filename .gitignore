@@ -3,6 +3,7 @@ __pycache__/
 .gitkeep
 data/
 outputs/
+paper/latex/out/
 
 # Keep paper-level figure planning docs versioned.
 !paper/figures/

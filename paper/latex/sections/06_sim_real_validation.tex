@@ -1,0 +1,39 @@
+% Placeholder conversion from: paper/sections/06_sim_real_validation.md
+\section{Simulation-to-experiment validation}
+
+\subsection{Evaluation setup}
+This section reports in-sample and out-of-sample simulation-to-experiment validation using the same initial-condition and parameter loading rules defined in the identification protocol. For each run, $\theta_0$ is initialized from the first sample point of the corresponding segment, and simulated trajectories are interpolated onto experimental timestamps before metric calculation.
+
+\subsection{Time-series comparison}
+Representative runs are reported in fixed order: in-sample group first, out-of-sample group second. Both $\theta(t)$ and $q(t)$ are shown whenever angular-rate sensing is available, with synchronized time axes and consistent sign conventions.
+
+\begin{figure}[htbp]
+  \centering
+  % TODO: Insert Fig. 10 here.
+  \caption{Multi-run in-sample and out-of-sample sim-real trajectories ($\theta$, $q$).}
+  \label{fig:sim-real-traj}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  % TODO: Insert Fig. 11 here.
+  \caption{Time-domain error traces with zero-reference and RMSE bands.}
+  \label{fig:error-traces}
+\end{figure}
+
+\subsection{Metrics and interpretation}
+The mandatory absolute metrics are reported for each split: $TAAE_\theta$, $TASE_\theta$, $RMSE_\theta$, $MAE_\theta$, $MaxAbs_\theta$, $dt_{90}$, overshoot error, steady-window mean and standard deviation, $RMSE_q$, and $MAE_q$. GapScore-based ranking is reported as a secondary aggregate indicator and interpreted jointly with absolute metrics.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Validation metrics by condition and split.}
+  \label{tab:validation-metrics}
+  \begin{tabular}{ll}
+    \toprule
+    Metric & Value \\
+    \midrule
+    TODO & TODO \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
