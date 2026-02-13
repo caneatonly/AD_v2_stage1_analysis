@@ -4,7 +4,7 @@
 % Source of truth: edit `paper/sections/*.md`, then propagate changes here.
 %
 % Note: this project intentionally keeps the LaTeX tree buildable from the repo root.
-\documentclass[authoryear,preprint,review,12pt]{elsarticle}
+\documentclass[preprint,review,12pt]{elsarticle}
 
 %% If you want single spacing (later / final polishing), drop the 'review' option:
 %% \documentclass[preprint,12pt]{elsarticle}
@@ -60,10 +60,7 @@ For this transition phase, an anisotropic permeability-corrected 3-DOF dynamic m
 The resulting platform-model framework provides consistent reconstruction of transition behavior and practical guidance for deployment-oriented design and parameter selection. Conclusions are explicitly limited to the current geometry, mass distribution, and actuation strategy, and the workflow is organized for reproducibility through protocolized preprocessing and condition-level split control.
 \end{abstract}
 
-%%Graphical abstract (optional)
-\begin{graphicalabstract}
-% \includegraphics{grabs}
-\end{graphicalabstract}
+%% Graphical abstract is optional for this journal and is not included here.
 
 %%Research highlights (also often uploaded as a separate file during submission).
 \begin{highlights}
@@ -101,10 +98,10 @@ The authors declare that they have no known competing financial interests or per
 \section*{Acknowledgements}
 % TODO: Place acknowledgements in this section, directly before the reference list.
 
-% NOTE: Use the journal's author-year reference style.
-% Enforce using the local official BST file under `paper/elsarticle/`.
+% NOTE: Enforce local official Ocean Engineering-compatible numeric style.
+% Strictly use the BST file under `paper/elsarticle/`.
 % NOTE: Use workspace-relative paths so latexmk can pre-check file existence.
-\bibliographystyle{paper/elsarticle/elsarticle-harv}
+\bibliographystyle{paper/elsarticle/elsarticle-num}
 \bibliography{paper/latex/references}
 
 \end{document}

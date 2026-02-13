@@ -15,5 +15,5 @@ Submission-side artifacts (placeholders for now):
 - `paper/latex/highlights.txt` (each bullet <= 85 characters)
 
 Reference style policy (Ocean Engineering):
-- Use author-year citations in LaTeX (`authoryear` option).
-- Enforce the official local BST from `paper/elsarticle/` via `\\bibliographystyle{paper/elsarticle/elsarticle-harv}` in `paper/latex/main.tex`.
+- Use numeric citation style in LaTeX for this project.
+- Strictly use a local official BST from `paper/elsarticle/` (current setting: `\\bibliographystyle{paper/elsarticle/elsarticle-num}`).

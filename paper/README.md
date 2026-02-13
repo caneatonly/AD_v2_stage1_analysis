@@ -30,10 +30,13 @@ Source (accessed 2026-02-13): `https://www.sciencedirect.com/journal/ocean-engin
 Frozen rules for this project:
 
 - Source of truth: `paper/sections/*.md` is authoritative; `paper/latex/` is publish-only and must mirror Markdown.
-- Highlights: prepare highlights as a separate editable file (see `paper/latex/highlights.txt`); keep bullets short and scannable.
+- Highlights: prepare highlights as a separate editable file (see `paper/latex/highlights.txt`); provide 3--5 bullets and keep each bullet concise (target <= 85 characters).
 - Abstract: avoid references/citations unless absolutely required; keep results phrasing appropriate for current evidence maturity.
 - Structure: use clearly numbered sections and subsections; keep notation and terminology consistent across the manuscript.
-- References: use the journal's author-year style and ensure every citation has a complete bibliographic entry.
+- Keywords: provide up to 6 keywords immediately after the abstract.
+- References: use numeric in-text citations and strictly compile with a BST from `paper/elsarticle/` (project default: `elsarticle-num.bst`); ensure every citation has a complete bibliographic entry.
 - Acknowledgements: keep as a separate section placed directly before the reference list in the LaTeX manuscript.
 - Author contributions: include a CRediT authorship contribution statement section (fill before submission).
 - Data statement: include a Data availability statement section (fill before submission).
+- Competing interests: include a Declaration of competing interest section.
+- Submission packaging: maintain editable source files for manuscript, figures, and supplementary artifacts.
