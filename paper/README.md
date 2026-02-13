@@ -30,10 +30,16 @@ Source (accessed 2026-02-13): `https://www.sciencedirect.com/journal/ocean-engin
 Frozen rules for this project:
 
 - Source of truth: `paper/sections/*.md` is authoritative; `paper/latex/` is publish-only and must mirror Markdown.
-- Highlights: prepare highlights as a separate editable file (see `paper/latex/highlights.txt`); keep bullets short and scannable.
-- Abstract: avoid references/citations unless absolutely required; keep results phrasing appropriate for current evidence maturity.
-- Structure: use clearly numbered sections and subsections; keep notation and terminology consistent across the manuscript.
-- References: use the journal's author-year style and ensure every citation has a complete bibliographic entry.
+- Manuscript class/style: default repo baseline is Elsevier `elsarticle` in `preprint` + `authoryear`; LaTeX double-column is permitted when explicitly needed by submission stage/editor request.
+- Highlights: provide exactly 3--5 bullets in a separate editable file (`paper/latex/highlights.txt`), each concise (target <=85 characters).
+- Abstract: provide a factual stand-alone abstract; avoid citations and undefined abbreviations.
+- Keywords: provide up to 6 keywords in the `keyword` block and keep terminology consistent with section text.
+- Structure: use clearly numbered sections/subsections; define symbols/units at first use and keep SI notation consistent.
+- Declarations: keep dedicated sections for Data availability, CRediT authorship contribution statement, Funding, Declaration of generative AI use, and Declaration of competing interest.
 - Acknowledgements: keep as a separate section placed directly before the reference list in the LaTeX manuscript.
-- Author contributions: include a CRediT authorship contribution statement section (fill before submission).
-- Data statement: include a Data availability statement section (fill before submission).
+- References: enforce the official local BST under `paper/elsarticle/` and ensure each citation has complete bibliographic metadata.
+- Figures/tables: captions must be self-contained, abbreviations explained in caption or text, and numbering must match manuscript order.
+
+- Layout models: `1p/3p/5p` are layout emulation options; keep the repository master in `preprint` unless a stage-specific format switch is required.
+
+- OE guide quick reference for this repo: `paper/OE_AUTHOR_GUIDE_QUICK_REFERENCE.md`.
