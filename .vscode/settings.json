@@ -1,8 +1,41 @@
 {
+  "latex-workshop.latex.rootFile": "paper/latex/main.tex",
+  "latex-workshop.latex.build.fromWorkspaceFolder": true,
   "latex-workshop.latex.autoBuild.run": "onSave",
   "latex-workshop.view.pdf.viewer": "tab",
   "latex-workshop.synctex.afterBuild.enabled": true,
   "latex-workshop.latex.outDir": "%WORKSPACE_FOLDER%/paper/latex/out",
+  "latex-workshop.latex.recipes": [
+    {
+      "name": "xelatex -> bibtex -> xelatex * 2",
+      "tools": [
+        "xelatex",
+        "bibtex",
+        "xelatex",
+        "xelatex"
+      ]
+    }
+  ],
+  "latex-workshop.latex.tools": [
+    {
+      "name": "xelatex",
+      "command": "xelatex",
+      "args": [
+        "-synctex=1",
+        "-interaction=nonstopmode",
+        "-file-line-error",
+        "-output-directory=%OUTDIR%",
+        "%DOC%"
+      ]
+    },
+    {
+      "name": "bibtex",
+      "command": "bibtex",
+      "args": [
+        "paper/latex/out/%DOCFILE%"
+      ]
+    }
+  ],
   "latex-workshop.latex.clean.fileTypes": [
     "*.aux",
     "*.bbl",
@@ -14,8 +47,8 @@
     "*.out",
     "*.run.xml",
     "*.synctex.gz",
-    "*.toc"
+    "*.toc",
+    "*.spl"
   ],
   "markdown-preview-enhanced.enableExtendedSyntax": true
 }
-

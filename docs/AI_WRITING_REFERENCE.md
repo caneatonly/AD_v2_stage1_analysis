@@ -2,7 +2,7 @@
 
 > **Authority**: This is the single authoritative reference for any AI agent working on this project's manuscript writing, LaTeX formatting, and content governance. It supersedes and consolidates all scattered documentation.
 >
-> **Last updated**: 2026-02-14
+> **Last updated**: 2026-02-15
 >
 > **Canonical location**: `docs/AI_WRITING_REFERENCE.md`
 
@@ -108,19 +108,26 @@ Every high-level claim MUST map to at least one evidence object in the manuscrip
 
 ## 3. Manuscript Structure & Section Status
 
-### 3.1 Section Architecture (Final)
+### 3.1 Section Architecture (Final — 7-section structure, updated 2026-02-15)
+
+> **Change log**: Merged former Sec 5 (Identification) and Sec 6 (Validation) into a single
+> "Parameter Identification and Model Validation" section; renumbered former Sec 7→6, Sec 8→7;
+> added Nomenclature section before Introduction; moved Fig. 12 from Sensitivity to Validation.
+>
+> **Change log (title update)**: All section/subsection titles renamed to OE concise-descriptive
+> style. Methodology names removed from headings; details expand on first use in body text.
 
 | # | Section | Source file | Status | Notes |
 |---|---------|------------|--------|-------|
+| — | Nomenclature | `paper/sections/00a_nomenclature.md` | ✅ Draft complete | Latin/Greek/subscript/abbreviation tables |
 | 0 | Abstract | `paper/sections/00_abstract.md` | ✅ Draft complete | Qualitative results, ~220 words |
 | 1 | Introduction | `paper/sections/01_introduction.md` | ✅ Draft complete | 5-paragraph structure, 3 contributions |
-| 2 | System and Mission Scenario | `paper/sections/02_system_and_mission_scenario.md` | ✅ Draft complete | Platform + conventions + experiment plan |
-| 3 | Anisotropic Permeability-Corrected Dynamics | `paper/sections/03_anisotropic_permeability_corrected_dynamics.md` | ✅ Draft complete | Full equations + parameter mapping |
-| 4 | CFD-to-Model Mapping and Validation | `paper/sections/04_cfd_to_model_mapping_and_validation.md` | ⚠️ Skeleton | Needs: credibility, coefficients, CP, flow snapshots |
-| 5 | Parameter Identification from Free-Decay Tests | `paper/sections/05_parameter_identification_free_decay.md` | ⚠️ Skeleton | Needs: protocol details, diagnostics |
-| 6 | Simulation-to-Experiment Validation | `paper/sections/06_sim_real_validation.md` | ⚠️ Skeleton | Needs: trajectories, metrics, interpretation |
-| 7 | Sensitivity and Design Implications | `paper/sections/07_sensitivity_and_design_implications.md` | ⚠️ Skeleton | Needs: envelopes, BG, damping, strategy |
-| 8 | Conclusion and Outlook | `paper/sections/08_conclusion_and_outlook.md` | ⚠️ Skeleton | Needs: summary + limitations + future work |
+| 2 | Platform description and deployment scenario | `paper/sections/02_system_and_mission_scenario.md` | ✅ Draft complete | Platform + conventions + experiment plan |
+| 3 | Dynamic model formulation | `paper/sections/03_anisotropic_permeability_corrected_dynamics.md` | ✅ Draft complete | Full equations + parameter mapping |
+| 4 | CFD-based hydrodynamic characterization | `paper/sections/04_cfd_to_model_mapping_and_validation.md` | ⚠️ Skeleton | Needs: credibility, coefficients, CP, flow snapshots |
+| 5 | Experimental identification and model validation | `paper/sections/05_parameter_identification_and_model_validation.md` | ⚠️ Skeleton | Merged: protocol + diagnostics + sim-real + metrics |
+| 6 | Parametric study and design implications | `paper/sections/06_sensitivity_analysis_and_design_implications.md` | ⚠️ Skeleton | Needs: envelopes, BG, damping, strategy |
+| 7 | Conclusions | `paper/sections/07_conclusions.md` | ⚠️ Skeleton | Needs: summary + limitations + future work |
 
 ### 3.2 Required End-Matter Sections (in main.tex)
 
@@ -129,6 +136,14 @@ Every high-level claim MUST map to at least one evidence object in the manuscrip
 - Declaration of competing interest (template done)
 - Acknowledgements (TODO)
 - References (placeholder BibTeX entries only — need 30-50 real citations)
+
+### 3.3 Nomenclature Placement (OE Convention)
+
+Following Ocean Engineering standard practice (observed in ~90% of published papers),
+Nomenclature is placed as a standalone section **before Introduction** in the final manuscript.
+In the Markdown source tree, it is stored as `paper/sections/00a_nomenclature.md`.
+In LaTeX, it will be rendered via `\section*{Nomenclature}` immediately after `\end{frontmatter}`,
+before `\input{sections/01_introduction}`.
 
 ### 3.3 Source-of-Truth Workflow
 
@@ -360,11 +375,11 @@ If $q$ data unavailable, renormalize remaining weights.
 | Fig. 7 | Pressure-center migration $X_{cp}(\alpha)$ with stability-region annotations | Sec. 4 | TODO |
 | Fig. 8 | Representative flow and pressure snapshots at 0°/30°/60°/90° AoA | Sec. 4 | TODO |
 | Fig. 9 | Identification diagnostics: residuals, multi-start convergence, bootstrap CIs | Sec. 5 | TODO |
-| Fig. 10 | Multi-run in-sample and out-of-sample sim-real trajectories ($\theta$, $q$) | Sec. 6 | TODO |
-| Fig. 11 | Time-domain error traces with zero-reference and RMSE bands | Sec. 6 | TODO |
-| Fig. 12 | Condition-normalized metric heatmap and GapScore ranking | Sec. 7 | TODO |
-| Fig. 13 | Sensitivity envelopes for initial energy, BG, and damping uncertainty | Sec. 7 | TODO |
-| Fig. 14 | Strategy surface $J(u_0, \theta_{off})$ with feasible valley regions | Sec. 7 | TODO |
+| Fig. 10 | Multi-run in-sample and out-of-sample sim-real trajectories ($\theta$, $q$) | Sec. 5 | TODO |
+| Fig. 11 | Time-domain error traces with zero-reference and RMSE bands | Sec. 5 | TODO |
+| Fig. 12 | Condition-normalized metric heatmap and GapScore ranking | Sec. 5 | TODO |
+| Fig. 13 | Sensitivity envelopes for initial energy, BG, and damping uncertainty | Sec. 6 | TODO |
+| Fig. 14 | Strategy surface $J(u_0, \theta_{off})$ with feasible valley regions | Sec. 6 | TODO |
 
 Detailed requirements for each figure: see `paper/figures/FIGURE_REQUIREMENTS.md`.
 
@@ -529,6 +544,15 @@ If experimental budget is limited:
 C:\AD_v2_stage1_analysis\
 ├── paper/
 │   ├── sections/*.md          # [AUTHORITATIVE] Manuscript drafts
+│   │   ├── 00_abstract.md
+│   │   ├── 00a_nomenclature.md    # NEW: symbol table (OE convention)
+│   │   ├── 01_introduction.md
+│   │   ├── 02_system_and_mission_scenario.md
+│   │   ├── 03_anisotropic_permeability_corrected_dynamics.md
+│   │   ├── 04_cfd_to_model_mapping_and_validation.md
+│   │   ├── 05_parameter_identification_and_model_validation.md  # Merged 05+06
+│   │   ├── 06_sensitivity_analysis_and_design_implications.md   # Renumbered
+│   │   └── 07_conclusions.md                                     # Renumbered
 │   ├── latex/
 │   │   ├── main.tex           # LaTeX main file
 │   │   ├── sections/*.tex     # LaTeX mirrors of Markdown
@@ -541,8 +565,9 @@ C:\AD_v2_stage1_analysis\
 │   │   └── elsarticle-num.bst
 │   ├── figures/
 │   │   └── FIGURE_REQUIREMENTS.md  # [FROZEN] Figure planning
+│   ├── 论文发表计划.md        # [FROZEN] Master plan (directly under paper/)
 │   └── savedpromots/
-│       └── 论文发表计划.md    # [FROZEN] Master plan
+│       └── 2026-02-13-工作缓存.md  # [DEPRECATED]
 ├── sim_flip/
 │   ├── src/                   # Core simulation modules
 │   │   ├── dynamics.py        # ODE right-hand side
@@ -606,10 +631,9 @@ C:\AD_v2_stage1_analysis\
 
 ### Priority 1: Complete skeleton sections to submittable quality
 1. Section 4 (CFD): Write credibility summary, coefficient analysis, CP migration, flow snapshots
-2. Section 5 (Identification): Write protocol details, diagnostic analysis, bootstrap CI discussion
-3. Section 6 (Validation): Write trajectory comparison, error analysis, metric interpretation
-4. Section 7 (Sensitivity): Write envelope analysis, BG/damping study, strategy surface discussion
-5. Section 8 (Conclusion): Write validated findings summary, limitations restatement, future work
+2. Section 5 (Identification + Validation): Write protocol details, diagnostic analysis, trajectory comparison, error analysis, metric interpretation
+3. Section 6 (Sensitivity): Write envelope analysis, BG/damping study, strategy surface discussion
+4. Section 7 (Conclusions): Write validated findings summary, limitations restatement, future work
 
 ### Priority 2: Data & evidence expansion
 6. Expand experiments from 3 to 12 conditions
@@ -618,12 +642,12 @@ C:\AD_v2_stage1_analysis\
 9. Backfill quantitative claims in Abstract/Introduction after data expansion
 
 ### Priority 3: Submission preparation
-10. Add Nomenclature section (between Introduction and Section 2, or start of Section 3)
-11. Add Appendix structure for supplementary CFD details
-12. Shorten title to ≤ 15 words
-13. Complete CRediT, Data availability, and Acknowledgements sections
-14. Fill or remove Graphical Abstract
-15. Final language polishing pass
+9. Add Nomenclature to LaTeX main.tex as front-matter section
+10. Add Appendix structure for supplementary CFD details
+11. Shorten title to ≤ 15 words
+12. Complete CRediT, Data availability, and Acknowledgements sections
+13. Fill or remove Graphical Abstract
+14. Final language polishing pass
 
 ---
 
@@ -635,7 +659,7 @@ This document consolidates and supersedes:
 |-----------------|--------|-------------|
 | `paper/README.md` | Active | Retained as project README; frozen rules absorbed here |
 | `paper/latex/README.md` | Active | Retained as build instructions; formatting rules absorbed here |
-| `paper/savedpromots/论文发表计划.md` | **Frozen master plan** | Retained; all content absorbed here |
+| `paper/论文发表计划.md` | **Frozen master plan** | Retained; all content absorbed here |
 | `paper/savedpromots/2026-02-13-工作缓存.md` | **Deprecated** | Superseded by this document; marked for archival |
 | `docs/plans/2026-02-12-mission-oriented-paper-writing-design.md` | **Historical** | Archived; narrative rules absorbed here |
 | `paper/figures/FIGURE_REQUIREMENTS.md` | Active | Retained as figure-specific reference; summary absorbed here |

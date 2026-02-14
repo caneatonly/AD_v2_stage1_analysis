@@ -1,7 +1,7 @@
 % Converted from: paper/sections/03_anisotropic_permeability_corrected_dynamics.md
-\section{Anisotropic permeability-corrected dynamics}
+\section{Dynamic model formulation}
 
-\subsection{Governing equations and state definition}
+\subsection{Governing equations}
 
 This section introduces the 3-DOF governing model for the horizontal-launch to vertical-stabilization phase, with frozen interfaces $\nu=[u,w,q]^T$ and $\eta=[\theta]$. The body-axis and sign conventions follow Section~2 (Fig.~\ref{fig:conventions}): $x_b$ forward, $z_b$ downward, nose-up pitch positive, and $q=d\theta/dt$ about $+y_b$.
 
@@ -37,7 +37,7 @@ where $A_{ref}$ and $L_{ref}$ are fixed reference area and length. The attack an
 \end{equation}
 and mapped/clamped to the CFD lookup range at runtime (details in Section~4). Following the equation-governance rule, no additional explicit Munk-moment term is introduced when $C_m(\alpha)$ already encodes the corresponding static effect.
 
-\subsection{Permeability-corrected added-mass terms}
+\subsection{Anisotropic permeability correction}
 \label{sec:added-mass}
 
 The main modeling novelty in this section is an anisotropic permeability correction to the added-mass / added-inertia totals. We conceptually separate (i) an outer-fluid added-mass set and (ii) an inner-water coupling contribution. Three directional coupling parameters
@@ -62,7 +62,7 @@ The corresponding effective inertias used in the ODE denominators are
 
 All terms above are frozen by the parameter contract and grouped into rigid-body, outer-added-mass, and permeability categories in the project configuration. Consistent with the implementation, the translational denominators use $m_{dry}$ (not $m_{wet}$).
 
-\subsection{Restoring, damping, and actuation terms}
+\subsection{Restoring and damping terms}
 
 The model retains Fossen-style rigid-body coupling through the Coriolis-like cross terms $\pm m\,\cdot\,(\cdot)\,q$ in the surge/heave equations. Restoring, damping, and optional configuration-dependent terms are defined as follows.
 
@@ -82,7 +82,7 @@ If a cable restoring mechanism is enabled in the hardware configuration, its con
 	M_{cable}(\theta,q) = -K_{cable}(\theta - \theta_{eq}) - C_{cable,q}\,q.
 \end{equation}
 
-\subsection{Model interfaces and reproducibility mapping}
+\subsection{Implementation summary}
 
 The manuscript equations above map one-to-one to the repository implementation:
 \begin{itemize}

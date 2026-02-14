@@ -11,8 +11,6 @@ Build output directory is configured to: `paper/latex/out/` (see `.vscode/settin
 Quick build from repo root:
 - `latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=paper/latex/out paper/latex/main.tex`
 
-Submission-side artifacts (placeholders for now):
-- `paper/latex/highlights.txt` (each bullet <= 85 characters)
 
 Reference style policy (Ocean Engineering):
 - Use author-year citations in LaTeX (`authoryear` option).

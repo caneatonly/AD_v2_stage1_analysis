@@ -1,6 +1,6 @@
-# 3. Anisotropic Permeability-Corrected Dynamics
+# 3. Dynamic model formulation
 
-## 3.1 Governing Equations and State Definition
+## 3.1 Governing equations
 
 This section introduces the 3-DOF governing model for the horizontal-launch to vertical-stabilization phase, with frozen interfaces `nu = [u, w, q]^T` and `eta = [theta]`. The body-axis and sign conventions follow Section 2 and `sim_flip/src/conventions.py` (Fig. 2): `x_b` forward, `z_b` downward, nose-up pitch positive, and `q = dtheta/dt` about `+y_b`.
 
@@ -51,7 +51,7 @@ $$
 
 and mapped/clamped to the CFD lookup range at runtime (details in Section 4; implementation in `sim_flip/src/cfd_table.py` and `sim_flip/src/kinematics.py`). Following the equation-governance rule, no additional explicit Munk-moment term is introduced when `C_m(\alpha)` already encodes the corresponding static effect.
 
-## 3.2 Permeability-Corrected Added-Mass Terms
+## 3.2 Anisotropic permeability correction
 
 The main modeling novelty in this section is an anisotropic permeability correction to the added-mass / added-inertia totals. We conceptually separate (i) an outer-fluid added-mass set and (ii) an inner-water coupling contribution. Three directional coupling parameters
 
@@ -81,7 +81,7 @@ $$
 
 All terms above are frozen by the parameter contract and are computed in `sim_flip/src/added_mass.py` from `sim_flip/configs/params_nominal.yaml` (`rigid_body`, `added_mass_outer`, `permeability`). Consistent with the implementation, the translational denominators use `m_dry` (not `m_wet`).
 
-## 3.3 Restoring, Damping, and Actuation Terms
+## 3.3 Restoring and damping terms
 
 The model retains Fossen-style rigid-body coupling through the Coriolis-like cross terms `\pm m\,\cdot\,(\cdot)\,q` in the surge/heave equations. Restoring, damping, and optional configuration-dependent terms are defined as follows.
 
@@ -109,7 +109,7 @@ $$
 
 When cable effects are not present, the corresponding parameters are set to disable this term (`enabled: false`), and `M_{cable}` is identically zero. Optional actuation terms `T` and `M_{thruster}` are provided as external inputs in the simulation interface but are set to zero for the free-decay identification experiments reported in this paper.
 
-## 3.4 Model Interfaces and Backward Compatibility
+## 3.4 Implementation summary
 
 The manuscript equations above map one-to-one to the repository implementation:
 
