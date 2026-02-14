@@ -1,6 +1,9 @@
-# Mission-Oriented Paper Writing Design (Validated)
+# Mission-Oriented Paper Writing Design (ARCHIVED)
 
-Date: 2026-02-12
+> **⚠️ HISTORICAL**: This document has been archived. Its content has been absorbed into `docs/AI_WRITING_REFERENCE.md`.
+> Do NOT use this file for active guidance. Refer to the unified reference document instead.
+
+Date: 2026-02-12 (archived: 2026-02-14)
 Scope: Abstract + Introduction drafting strategy for the manuscript:
 `Design and Characterization of a Mission-Oriented Self-Suspending Underwater Platform with Anisotropic Permeability-Corrected Dynamics and Experimental Identification`
 

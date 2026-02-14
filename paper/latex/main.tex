@@ -4,21 +4,22 @@
 % Source of truth: edit `paper/sections/*.md`, then propagate changes here.
 %
 % Note: this project intentionally keeps the LaTeX tree buildable from the repo root.
-\documentclass[authoryear,preprint,review,12pt]{elsarticle}
+%% Two-column final format for Ocean Engineering submission.
+\documentclass[final,5p,times,twocolumn]{elsarticle}
 
-%% If you want single spacing (later / final polishing), drop the 'review' option:
-%% \documentclass[preprint,12pt]{elsarticle}
-
-%% For final journal layout, elsarticle supports e.g.:
-%% \documentclass[final,5p,times]{elsarticle}
+%% For review with line numbers (single-column), use instead:
+%% \documentclass[authoryear,preprint,review,12pt]{elsarticle}
+%%
+%% For review with line numbers (two-column), use instead:
+%% \documentclass[review,5p,times,twocolumn]{elsarticle}
 
 %% The amssymb package provides various useful mathematical symbols.
 \usepackage{amssymb}
 %% The amsmath package provides various useful equation environments.
 \usepackage{amsmath}
 
-%% Line numbers (recommended for review).
-\usepackage{lineno}
+%% Line numbers (enable for review mode only).
+%% \usepackage{lineno}
 
 %% For figures, graphicx is loaded by elsarticle.cls; keep it explicit for clarity.
 \usepackage{graphicx}
@@ -32,51 +33,51 @@
 \def\input@path{{paper/latex/}{paper/latex/sections/}}
 \makeatother
 
-\modulolinenumbers[5]
+%% \modulolinenumbers[5]  % Enable for review mode
 \journal{Ocean Engineering}
 
 \begin{document}
 \begin{frontmatter}
 
-\title{Design and Characterization of a Mission-Oriented Self-Suspending Underwater Platform with Anisotropic Permeability-Corrected Dynamics and Experimental Identification}
+	\title{Design and Characterization of a Mission-Oriented Self-Suspending Underwater Platform with Anisotropic Permeability-Corrected Dynamics and Experimental Identification}
 
-% TODO: Replace with real author list and affiliations (official elsarticle style).
-\author[inst1]{First Author\corref{cor1}}
-\author[inst1]{Second Author}
-\cortext[cor1]{Corresponding author.}
-\ead{corresponding.author@example.com}
-\affiliation[inst1]{organization={Affiliation},
-            addressline={},
-            city={},
-            postcode={},
-            state={},
-            country={}}
+	% TODO: Replace with real author list and affiliations (official elsarticle style).
+	\author[inst1]{First Author\corref{cor1}}
+	\author[inst1]{Second Author}
+	\cortext[cor1]{Corresponding author.}
+	\ead{corresponding.author@example.com}
+	\affiliation[inst1]{organization={Affiliation},
+		addressline={},
+		city={},
+		postcode={},
+		state={},
+		country={}}
 
-\begin{abstract}
-Underwater corner reflectors are used as passive high-contrast markers for marine detection and localization tasks, and their deployment reliability depends on the carrier platform. This paper presents the design and characterization of a mission-oriented self-suspending underwater platform developed for corner-reflector deployment. The platform is required to pass through a horizontal-launch to vertical-stabilization transition before reaching its working posture; therefore, platform architecture, mass-buoyancy arrangement, and deployment workflow are treated as primary engineering contributions.
+	\begin{abstract}
+		Underwater corner reflectors are used as passive high-contrast markers for marine detection and localization tasks, and their deployment reliability depends on the carrier platform. This paper presents the design and characterization of a mission-oriented self-suspending underwater platform developed for corner-reflector deployment. The platform is required to pass through a horizontal-launch to vertical-stabilization transition before reaching its working posture; therefore, platform architecture, mass-buoyancy arrangement, and deployment workflow are treated as primary engineering contributions.
 
-For this transition phase, an anisotropic permeability-corrected 3-DOF dynamic model is developed with three physically interpretable coupling parameters, \texttt{mu\_x}, \texttt{mu\_z}, and \texttt{mu\_theta}, to represent directional internal-water coupling effects. CFD-derived static hydrodynamic mappings are used as model evidence for force and moment replacement logic, while rotational damping is retained as an identification-oriented term. A closed validation chain is established through free-decay identification, out-of-sample simulation-to-experiment evaluation, and sensitivity-based envelope analysis. The identification and evaluation stages use consistent initialization and condition-level split rules to reduce leakage risk and support fair sim-real comparison.
+		For this transition phase, an anisotropic permeability-corrected 3-DOF dynamic model is developed with three physically interpretable coupling parameters, $\mu_x$, $\mu_z$, and $\mu_\theta$, to represent directional internal-water coupling effects. CFD-derived static hydrodynamic mappings are used as model evidence for force and moment replacement logic, while rotational damping is retained as an identification-oriented term. A closed validation chain is established through free-decay identification, out-of-sample simulation-to-experiment evaluation, and sensitivity-based envelope analysis. The identification and evaluation stages use consistent initialization and condition-level split rules to reduce leakage risk and support fair sim-real comparison.
 
-The resulting platform-model framework provides consistent reconstruction of transition behavior and practical guidance for deployment-oriented design and parameter selection. Conclusions are explicitly limited to the current geometry, mass distribution, and actuation strategy, and the workflow is organized for reproducibility through protocolized preprocessing and condition-level split control.
-\end{abstract}
+		The resulting platform-model framework provides consistent reconstruction of transition behavior and practical guidance for deployment-oriented design and parameter selection. Conclusions are explicitly limited to the current geometry, mass distribution, and actuation strategy, and the workflow is organized for reproducibility through protocolized preprocessing and condition-level split control.
+	\end{abstract}
 
-%%Graphical abstract (optional)
-\begin{graphicalabstract}
-% \includegraphics{grabs}
-\end{graphicalabstract}
+	%%Graphical abstract (optional)
+	\begin{graphicalabstract}
+		% \includegraphics{grabs}
+	\end{graphicalabstract}
 
-%%Research highlights (also often uploaded as a separate file during submission).
-\begin{highlights}
-\input{highlights_items}
-\end{highlights}
+	%%Research highlights (also often uploaded as a separate file during submission).
+	\begin{highlights}
+		\input{highlights_items}
+	\end{highlights}
 
-\begin{keyword}
-Underwater platform \sep Mission-oriented deployment \sep Free-decay identification \sep CFD evidence \sep Added mass \sep Permeability correction
-\end{keyword}
+	\begin{keyword}
+		Underwater platform \sep Mission-oriented deployment \sep Free-decay identification \sep CFD evidence \sep Added mass \sep Permeability correction
+	\end{keyword}
 
 \end{frontmatter}
 
-\linenumbers
+%% \linenumbers  % Uncomment for review mode (requires lineno package above)
 
 \input{sections/01_introduction}
 \input{sections/02_system_and_mission_scenario}

@@ -5,6 +5,29 @@ data/
 outputs/
 paper/latex/out/
 
+# AI edit tool backups
+*.bak[0-9]*
+
+# LaTeX intermediate files
+indent.log
+*.aux
+*.bbl
+*.blg
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.synctex(busy)
+
+# Windows artifacts
+nul
+
+# Python
+.venv/
+*.pyc
+
+# Elsevier template (download from CTAN if needed)
+paper/elsarticle/
+
 # Keep paper-level figure planning docs versioned.
 !paper/figures/
 paper/figures/*

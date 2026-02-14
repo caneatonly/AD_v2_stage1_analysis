@@ -3,64 +3,64 @@
 
 \subsection{Governing equations and state definition}
 
-This section introduces the 3-DOF governing model for the horizontal-launch to vertical-stabilization phase, with frozen interfaces $\nu=[u,w,q]^T$ and $\eta=[\theta]$. The body-axis and sign conventions follow Section~2 and \path{sim_flip/src/conventions.py} (Fig.~\ref{fig:conventions}): $x_b$ forward, $z_b$ downward, nose-up pitch positive, and $q=d\theta/dt$ about $+y_b$.
+This section introduces the 3-DOF governing model for the horizontal-launch to vertical-stabilization phase, with frozen interfaces $\nu=[u,w,q]^T$ and $\eta=[\theta]$. The body-axis and sign conventions follow Section~2 (Fig.~\ref{fig:conventions}): $x_b$ forward, $z_b$ downward, nose-up pitch positive, and $q=d\theta/dt$ about $+y_b$.
 
 The simulation state is
 \begin{equation}
-  \mathbf{x} = [u,\; w,\; q,\; \theta]^T,
+	\mathbf{x} = [u,\; w,\; q,\; \theta]^T,
 \end{equation}
 where $u$ and $w$ are body-frame translational velocities, $q$ is pitch rate, and $\theta$ is the pitch angle. The kinematic closure is $\dot{\theta}=q$.
 
 For the present phase of interest, the governing dynamics are written in a compact planar Fossen-style form with effective inertias (defined in Section~\ref{sec:added-mass}):
 \begin{align}
-  m_x\,\dot{u} - m_z\,wq &= X_{cfd}(\alpha) - (W - B)\,\sin\theta + T, \\
-  m_z\,\dot{w} + m_x\,uq &= Z_{cfd}(\alpha) + (W - B)\,\cos\theta, \\
-  I_y\,\dot{q} &= M_{cfd}(\alpha) + M_{damp}(q) + M_{bg}(\theta) + M_{cable}(\theta,q) + M_{thruster}, \\
-  \dot{\theta} &= q.
+	m_x\,\dot{u} - m_z\,wq & = X_{cfd}(\alpha) - (W - B)\,\sin\theta + T,                                           \\
+	m_z\,\dot{w} + m_x\,uq & = Z_{cfd}(\alpha) + (W - B)\,\cos\theta,                                               \\
+	I_y\,\dot{q}           & = M_{cfd}(\alpha) + M_{damp}(q) + M_{bg}(\theta) + M_{cable}(\theta,q) + M_{thruster}, \\
+	\dot{\theta}           & = q.
 \end{align}
 
 Here, $W=m_{dry}g$ is the weight magnitude and $B=B_{mass}g$ is the buoyancy magnitude (implemented as equivalent mass in the parameter tree). The terms $T$ and $M_{thruster}$ are optional actuation inputs; in the free-decay identification setting they are set to zero.
 
 Hydrodynamic forces and moment are represented by static-CFD tables through a dynamic-pressure scaling:
 \begin{equation}
-  V = \sqrt{u^2 + w^2}, \qquad Q = \tfrac{1}{2}\rho V^2,
+	V = \sqrt{u^2 + w^2}, \qquad Q = \tfrac{1}{2}\rho V^2,
 \end{equation}
 with a numerical safeguard $Q=0$ when $V<V_{eps}$ for robustness. The CFD-driven force and moment are
 \begin{align}
-  X_{cfd} &= Q\,A_{ref}\,C_X(\alpha), \\
-  Z_{cfd} &= Q\,A_{ref}\,C_Z(\alpha), \\
-  M_{cfd} &= Q\,A_{ref}\,L_{ref}\,C_m(\alpha),
+	X_{cfd} & = Q\,A_{ref}\,C_X(\alpha),          \\
+	Z_{cfd} & = Q\,A_{ref}\,C_Z(\alpha),          \\
+	M_{cfd} & = Q\,A_{ref}\,L_{ref}\,C_m(\alpha),
 \end{align}
-where $A_{ref}$ and $L_{ref}$ are fixed reference area and length (\path{sim_flip/configs/params_nominal.yaml}). The attack angle is computed by the frozen convention
+where $A_{ref}$ and $L_{ref}$ are fixed reference area and length. The attack angle is computed by the frozen convention
 \begin{equation}
-  \alpha_{raw} = \mathrm{atan2}(w, u),
+	\alpha_{raw} = \mathrm{atan2}(w, u),
 \end{equation}
-and mapped/clamped to the CFD lookup range at runtime (details in Section~4; implementation in \path{sim_flip/src/cfd_table.py} and \path{sim_flip/src/kinematics.py}). Following the equation-governance rule, no additional explicit Munk-moment term is introduced when $C_m(\alpha)$ already encodes the corresponding static effect.
+and mapped/clamped to the CFD lookup range at runtime (details in Section~4). Following the equation-governance rule, no additional explicit Munk-moment term is introduced when $C_m(\alpha)$ already encodes the corresponding static effect.
 
 \subsection{Permeability-corrected added-mass terms}
 \label{sec:added-mass}
 
 The main modeling novelty in this section is an anisotropic permeability correction to the added-mass / added-inertia totals. We conceptually separate (i) an outer-fluid added-mass set and (ii) an inner-water coupling contribution. Three directional coupling parameters
 \begin{equation}
-  \mu_x,\;\mu_z,\;\mu_{\theta} \in [0,1]
+	\mu_x,\;\mu_z,\;\mu_{\theta} \in [0,1]
 \end{equation}
 represent the fraction of inner-water inertia that effectively couples to the rigid-body motion in surge ($x$), heave ($z$), and pitch ($\theta$) channels, respectively. This formulation is intentionally compact and physically interpretable: $\mu \approx 0$ indicates weak coupling (high internal permeability / relative flow), while $\mu \approx 1$ indicates strong coupling (near-lumped inner water).
 
 Using the project sign convention (typical Fossen form expects negative added-mass derivatives), the total added-mass / added-inertia terms are defined as:
 \begin{align}
-  X_{\dot{u},total} &= X_{\dot{u},outer} - \mu_x\,m_{water,inner}, \\
-  Z_{\dot{w},total} &= Z_{\dot{w},outer} - \mu_z\,m_{water,inner}, \\
-  M_{\dot{q},total} &= M_{\dot{q},outer} - \mu_{\theta}\,I_{water,inner}.
+	X_{\dot{u},total} & = X_{\dot{u},outer} - \mu_x\,m_{water,inner},        \\
+	Z_{\dot{w},total} & = Z_{\dot{w},outer} - \mu_z\,m_{water,inner},        \\
+	M_{\dot{q},total} & = M_{\dot{q},outer} - \mu_{\theta}\,I_{water,inner}.
 \end{align}
 
 The corresponding effective inertias used in the ODE denominators are
 \begin{equation}
-  m_x = m_{dry} - X_{\dot{u},total}, \qquad
-  m_z = m_{dry} - Z_{\dot{w},total}, \qquad
-  I_y = I_{yy} - M_{\dot{q},total}.
+	m_x = m_{dry} - X_{\dot{u},total}, \qquad
+	m_z = m_{dry} - Z_{\dot{w},total}, \qquad
+	I_y = I_{yy} - M_{\dot{q},total}.
 \end{equation}
 
-All terms above are frozen by the parameter contract and are computed in \path{sim_flip/src/added_mass.py} from \path{sim_flip/configs/params_nominal.yaml} (\texttt{rigid\_body}, \texttt{added\_mass\_outer}, \texttt{permeability}). Consistent with the implementation, the translational denominators use $m_{dry}$ (not $m_{wet}$).
+All terms above are frozen by the parameter contract and grouped into rigid-body, outer-added-mass, and permeability categories in the project configuration. Consistent with the implementation, the translational denominators use $m_{dry}$ (not $m_{wet}$).
 
 \subsection{Restoring, damping, and actuation terms}
 
@@ -68,34 +68,34 @@ The model retains Fossen-style rigid-body coupling through the Coriolis-like cro
 
 Hydrostatic restoring moment is modeled by a buoyancy-center offset $(x_b,z_b)$ in the body frame:
 \begin{equation}
-  M_{bg}(\theta) = B\,(z_b\,\sin\theta + x_b\,\cos\theta),
+	M_{bg}(\theta) = B\,(z_b\,\sin\theta + x_b\,\cos\theta),
 \end{equation}
 where $B=B_{mass}g$.
 
 Rotational damping is retained as an identification-oriented term (not obtained from static CFD tables):
 \begin{equation}
-  M_{damp}(q) = -\left(d_q + d_{q,abs}|q|\right)q.
+	M_{damp}(q) = -\left(d_q + d_{q,abs}|q|\right)q.
 \end{equation}
 
 If a cable restoring mechanism is enabled in the hardware configuration, its contribution is modeled as a linear torsional spring-damper around an equilibrium angle $\theta_{eq}$:
 \begin{equation}
-  M_{cable}(\theta,q) = -K_{cable}(\theta - \theta_{eq}) - C_{cable,q}\,q.
+	M_{cable}(\theta,q) = -K_{cable}(\theta - \theta_{eq}) - C_{cable,q}\,q.
 \end{equation}
 
 \subsection{Model interfaces and reproducibility mapping}
 
 The manuscript equations above map one-to-one to the repository implementation:
 \begin{itemize}
-  \item State ordering: $y=[u,w,q,\theta]$ is used consistently in the ODE right-hand side and events (\path{sim_flip/src/dynamics.py}).
-  \item Kinematics and CFD inputs: $V$, $Q$, and $\alpha$ handling are computed in \path{sim_flip/src/kinematics.py}; coefficient interpolation uses \path{sim_flip/src/cfd_table.py} and the default dataset \path{sim_flip/data/cfd_table_clean.csv}.
-  \item Permeability correction: added-mass totals and effective inertias are computed in \path{sim_flip/src/added_mass.py} from the YAML parameter tree.
-  \item Parameter interfaces: \texttt{rho/g/A\_ref/L\_ref}, \texttt{m\_dry/Iyy/m\_water\_inner/I\_water\_inner}, \texttt{X\_udot\_outer/Z\_wdot\_outer/M\_qdot\_outer}, \texttt{mu\_x/mu\_z/mu\_theta}, \texttt{B\_mass/x\_b/z\_b}, \texttt{d\_q/d\_q\_abs}, and optional cable terms are single-sourced in \path{sim_flip/configs/params_nominal.yaml}.
+	\item State ordering: $y=[u,w,q,\theta]$ is used consistently in the ODE right-hand side and event functions.
+	\item Kinematics and CFD inputs: $V$, $Q$, and $\alpha$ are computed from the body-frame velocities; coefficient interpolation uses the angle-dependent lookup table.
+	\item Permeability correction: added-mass totals and effective inertias are derived from the parameter tree.
+	\item All physical parameters ($\rho$, $g$, $A_{ref}$, $L_{ref}$, $m_{dry}$, $I_{yy}$, $m_{water,inner}$, $I_{water,inner}$, $X_{\dot{u},outer}$, $Z_{\dot{w},outer}$, $M_{\dot{q},outer}$, $\mu_x$, $\mu_z$, $\mu_\theta$, $B_{mass}$, $x_b$, $z_b$, $d_q$, $d_{q,abs}$, and optional cable terms) are single-sourced in the project configuration file.
 \end{itemize}
 
 \begin{figure}[htbp]
-  \centering
-  % TODO: Insert Fig. 4 here (see paper/figures/FIGURE_REQUIREMENTS.md).
-  \caption{Model-term map from physical mechanisms to equation blocks and code interfaces.}
-  \label{fig:model-term-map}
+	\centering
+	% TODO: Insert Fig. 4 here (see paper/figures/FIGURE_REQUIREMENTS.md).
+	\caption{Model-term map from physical mechanisms to equation blocks and code interfaces.}
+	\label{fig:model-term-map}
 \end{figure}
 

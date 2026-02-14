@@ -11,20 +11,20 @@ Unlike a general-purpose underwater vehicle study, this work is mission-oriented
 
 The proposed system is a self-suspending underwater platform with coupled structural and hydrostatic design. The architecture is defined by: (i) rigid-body mass distribution, (ii) buoyancy-center placement relative to the body frame, (iii) internal-water coupling represented later by permeability-corrected terms, and (iv) optional cable-related restoring effects used in the present hardware configuration.
 
-For the nominal setup used throughout this manuscript, key physical parameters are frozen in \path{sim_flip/configs/params_nominal.yaml}: dry mass $m_{dry}=\SI{2.55}{kg}$, wet mass $m_{wet}=\SI{2.76}{kg}$, inner-water equivalent mass $m_{water,inner}=\SI{0.21}{kg}$, pitch inertia $I_{yy}=\SI{0.05741}{kg\,m^2}$, and inner-water inertia $I_{water,inner}=\SI{0.01119}{kg\,m^2}$. Buoyancy is implemented as equivalent mass with $B_{mass}=\SI{2.55}{kg}$ and nominal offset $x_b=\SI{0.02535}{m}$. These values define the baseline configuration for all reported simulation-experiment comparisons.
+For the nominal setup used throughout this manuscript, key physical parameters are frozen in the project parameter file: dry mass $m_{dry}=\SI{2.55}{kg}$, wet mass $m_{wet}=\SI{2.76}{kg}$, inner-water equivalent mass $m_{water,inner}=\SI{0.21}{kg}$, pitch inertia $I_{yy}=\SI{0.05741}{kg\,m^2}$, and inner-water inertia $I_{water,inner}=\SI{0.01119}{kg\,m^2}$. Buoyancy is implemented as equivalent mass with $B_{mass}=\SI{2.55}{kg}$ and nominal offset $x_b=\SI{0.02535}{m}$. These values define the baseline configuration for all reported simulation-experiment comparisons.
 
 \begin{figure}[htbp]
-  \centering
-  % TODO: Insert Fig. 2 here (see paper/figures/FIGURE_REQUIREMENTS.md).
-  \caption{Body-axis definition, sign convention, and state interface ($u$, $w$, $q$, $\theta$).}
-  \label{fig:conventions}
+	\centering
+	% TODO: Insert Fig. 2 here (see paper/figures/FIGURE_REQUIREMENTS.md).
+	\caption{Body-axis definition, sign convention, and state interface ($u$, $w$, $q$, $\theta$).}
+	\label{fig:conventions}
 \end{figure}
 
 \subsection{Mission phase of interest and state boundary}
 
 This paper focuses on one mission-critical phase: horizontal launch to vertical stabilization. The stabilized posture is defined near $\theta=\SI{90}{deg}$ under the project convention. The analysis excludes full closed-loop depth-keeping and long-horizon mission execution; those are treated as future work.
 
-The state interface used across data processing, modeling, and simulation is fixed as $\nu=[u,w,q]^T$ and $\eta=[\theta]$. Sign and axis conventions are frozen in \path{sim_flip/src/conventions.py}: body $x_b$ forward, $z_b$ downward, nose-up pitch positive, and $q=d\theta/dt$ about $+y_b$. Angle of attack is computed as $\alpha=\mathrm{atan2}(w,u)$. Freezing these definitions prevents silent inconsistency between CFD tables, identification scripts, and dynamic simulation.
+The state interface used across data processing, modeling, and simulation is fixed as $\nu=[u,w,q]^T$ and $\eta=[\theta]$. Sign and axis conventions are frozen as project-level definitions: body $x_b$ forward, $z_b$ downward, nose-up pitch positive, and $q=d\theta/dt$ about $+y_b$. Angle of attack is computed as $\alpha=\mathrm{atan2}(w,u)$. Freezing these definitions prevents silent inconsistency between CFD tables, identification scripts, and dynamic simulation.
 
 \subsection{Deployment sequence and experimental program}
 
@@ -35,10 +35,10 @@ The use of protocolized run definitions, deterministic segmentation, and conditi
 At the time of this draft, the baseline evidence includes three free-decay segments, with planned expansion to a 12-condition matrix over $\theta_0$ and $q_0$ levels (minimum two repeats per condition). Data split is performed by condition blocks rather than random sample points, and leave-one-theta-level-out validation is adopted to test extrapolation behavior. This design links platform operation constraints with identification and out-of-sample evaluation requirements.
 
 \begin{figure}[htbp]
-  \centering
-  % TODO: Insert Fig. 3 here (see paper/figures/FIGURE_REQUIREMENTS.md).
-  \caption{Experimental condition matrix, repeat policy, and anti-leakage split strategy.}
-  \label{fig:condition-matrix}
+	\centering
+	% TODO: Insert Fig. 3 here (see paper/figures/FIGURE_REQUIREMENTS.md).
+	\caption{Experimental condition matrix, repeat policy, and anti-leakage split strategy.}
+	\label{fig:condition-matrix}
 \end{figure}
 
 \subsection{Scope, assumptions, and transferability}
