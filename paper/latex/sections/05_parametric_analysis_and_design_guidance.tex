@@ -1,0 +1,46 @@
+% Converted from: paper/sections/05_parametric_analysis_and_design_guidance.md
+\section{Parametric Analysis and Design Guidance}
+
+\subsection{Initial-Condition Envelope}
+
+The initial-condition envelope is evaluated to identify success and failure regions for transition completion, stall risk, and roll-over tendency.
+
+\begin{figure}[htbp]
+	\centering
+	% TODO: Insert Fig. 18 here.
+	\caption{Operational success-envelope map in the initial-condition space.}
+	\label{fig:sec5-success-envelope}
+\end{figure}
+
+\subsection{Actuation Timing Effects}
+
+Shutdown-angle sweeps are compared with the always-on strategy using response time, overshoot, terminal rate, and safety displacement indicators.
+
+\begin{figure}[htbp]
+	\centering
+	% TODO: Insert Fig. 19 here.
+	\caption{Control-strategy objective surface $J(u_0, \theta_{off})$ and feasible valley region.}
+	\label{fig:sec5-strategy-surface}
+\end{figure}
+
+\subsection{Sensitivity to BG and Damping}
+
+Sensitivity to $BG$ variation and damping uncertainty is analyzed to establish engineering design margins and performance trends.
+
+\begin{figure}[htbp]
+	\centering
+	% TODO: Insert Fig. 20 here.
+	\caption{Sensitivity envelopes under $BG$ shift and damping uncertainty.}
+	\label{fig:sec5-sensitivity-envelopes}
+\end{figure}
+
+\subsection{Recommended Operating Region}
+
+Based on envelope and sensitivity outcomes, this section defines a recommended operating region for deployment-oriented operation. Recommendations are reported as bounded guidance under the current geometry, mass distribution, and actuation strategy, rather than as universal optimal policies.
+
+\begin{figure}[htbp]
+	\centering
+	% TODO: Insert Fig. 21 here.
+	\caption{Integrated operating-guidance chart combining feasibility, robustness, and strategy preference.}
+	\label{fig:sec5-integrated-guidance}
+\end{figure}

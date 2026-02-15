@@ -1,0 +1,68 @@
+% Converted from: paper/sections/04_model_validation_against_free_decay_experiments.md
+\section{Model Validation Against Free-Decay Experiments}
+
+\subsection{Validation Dataset and Split Strategy}
+
+Validation is performed using the same protocolized data interface as parameter determination, while preserving condition-level anti-leakage boundaries. Segment selection follows predefined split tags and optional cross-validation folds, and validation sets are separated from calibration usage at condition level.
+
+The split policy evaluates extrapolation robustness rather than pointwise interpolation. Leave-one-theta-level-out settings are applied where configured.
+
+\begin{figure}[htbp]
+	\centering
+	% TODO: Insert Fig. 13 here.
+	\caption{Validation dataset coverage and split topology across operating conditions.}
+	\label{fig:sec4-split-topology}
+\end{figure}
+
+\subsection{In-Sample Performance}
+
+In-sample comparison serves as verification of calibration behavior under the fixed parameter set determined in Section~3. For each segment, $\theta_0$ is initialized from the first experimental sample, and simulated trajectories are sampled at experimental timestamps for metric consistency.
+
+In-sample trajectories are shown in Fig.~\ref{fig:sec4-sim-real-trajectories} and interpreted jointly with out-of-sample behavior.
+
+\subsection{Out-of-Sample Performance}
+
+Out-of-sample comparison is the primary validation target. Representative trajectories are presented with synchronized time axes for $\theta(t)$ and $q(t)$, when angular-rate measurements are available.
+
+\begin{figure}[htbp]
+	\centering
+	% TODO: Insert Fig. 14 here.
+	\caption{Multi-run in-sample and out-of-sample sim-real trajectories ($\theta$, $q$).}
+	\label{fig:sec4-sim-real-trajectories}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+	% TODO: Insert Fig. 15 here.
+	\caption{Time-domain trajectory-error traces with zero-reference and uncertainty bands.}
+	\label{fig:sec4-error-traces}
+\end{figure}
+
+\subsection{Error Metrics and GapScore Analysis}
+
+Validation reports absolute metrics for each split and condition: $TAAE_\theta$, $TASE_\theta$, $RMSE_\theta$, $MAE_\theta$, $MaxAbs_\theta$, $dt90$, overshoot error, steady-window mean and standard deviation, $RMSE_q$, and $MAE_q$. GapScore-based ranking complements these metrics through condition-normalized aggregation.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Validation metrics by condition and split.}
+	\label{tab:sec4-validation-metrics}
+	% TODO: Insert Table 1 here.
+\end{table}
+
+\begin{figure}[htbp]
+	\centering
+	% TODO: Insert Fig. 16 here.
+	\caption{Condition-wise validation metrics and GapScore ranking map.}
+	\label{fig:sec4-gapscore-heatmap}
+\end{figure}
+
+\subsection{Discrepancy Analysis}
+
+Discrepancy analysis distinguishes phase mismatch, amplitude mismatch, and terminal-state bias, and relates deviation patterns to model assumptions and operating-condition boundaries. The resulting error patterns define the confidence range used in the design-oriented analysis of Section~5.
+
+\begin{figure}[htbp]
+	\centering
+	% TODO: Insert Fig. 17 here.
+	\caption{Discrepancy-mode decomposition for representative validation cases.}
+	\label{fig:sec4-discrepancy-modes}
+\end{figure}

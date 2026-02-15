@@ -108,26 +108,23 @@ Every high-level claim MUST map to at least one evidence object in the manuscrip
 
 ## 3. Manuscript Structure & Section Status
 
-### 3.1 Section Architecture (Final — 7-section structure, updated 2026-02-15)
+### 3.1 Section Architecture (Final — 6-section structure, updated 2026-02-15)
 
-> **Change log**: Merged former Sec 5 (Identification) and Sec 6 (Validation) into a single
-> "Parameter Identification and Model Validation" section; renumbered former Sec 7→6, Sec 8→7;
-> added Nomenclature section before Introduction; moved Fig. 12 from Sensitivity to Validation.
->
-> **Change log (title update)**: All section/subsection titles renamed to OE concise-descriptive
-> style. Methodology names removed from headings; details expand on first use in body text.
+> **Change log**: Consolidated chapter architecture to 6 main sections.
+> CFD coefficient acquisition and parameter determination are integrated into Section 3.
+> Section 4 is reserved for validation against free-decay experiments.
+> Section 5 focuses on parametric analysis and design guidance.
 
 | # | Section | Source file | Status | Notes |
 |---|---------|------------|--------|-------|
 | — | Nomenclature | `paper/sections/00a_nomenclature.md` | ✅ Draft complete | Latin/Greek/subscript/abbreviation tables |
 | 0 | Abstract | `paper/sections/00_abstract.md` | ✅ Draft complete | Qualitative results, ~220 words |
-| 1 | Introduction | `paper/sections/01_introduction.md` | ✅ Draft complete | 5-paragraph structure, 3 contributions |
-| 2 | Platform description and deployment scenario | `paper/sections/02_system_and_mission_scenario.md` | ✅ Draft complete | Platform + conventions + experiment plan |
-| 3 | Dynamic model formulation | `paper/sections/03_anisotropic_permeability_corrected_dynamics.md` | ✅ Draft complete | Full equations + parameter mapping |
-| 4 | CFD-based hydrodynamic characterization | `paper/sections/04_cfd_to_model_mapping_and_validation.md` | ⚠️ Skeleton | Needs: credibility, coefficients, CP, flow snapshots |
-| 5 | Experimental identification and model validation | `paper/sections/05_parameter_identification_and_model_validation.md` | ⚠️ Skeleton | Merged: protocol + diagnostics + sim-real + metrics |
-| 6 | Parametric study and design implications | `paper/sections/06_sensitivity_analysis_and_design_implications.md` | ⚠️ Skeleton | Needs: envelopes, BG, damping, strategy |
-| 7 | Conclusions | `paper/sections/07_conclusions.md` | ⚠️ Skeleton | Needs: summary + limitations + future work |
+| 1 | Introduction | `paper/sections/01_introduction.md` | ✅ Draft complete | OE-style four-subsection structure |
+| 2 | Platform configuration and deployment scenario | `paper/sections/02_system_and_mission_scenario.md` | ✅ Draft complete | Platform + conventions + experiment protocol |
+| 3 | Dynamic model development and parameter determination | `paper/sections/03_anisotropic_permeability_corrected_dynamics.md` | ✅ Draft complete | Equations + CFD closure + identification procedure |
+| 4 | Model validation against free-decay experiments | `paper/sections/04_model_validation_against_free_decay_experiments.md` | ⚠️ Skeleton | In-sample/out-of-sample + metrics + discrepancy analysis |
+| 5 | Parametric analysis and design guidance | `paper/sections/05_parametric_analysis_and_design_guidance.md` | ⚠️ Skeleton | Envelopes + timing + BG/damping + operating region |
+| 6 | Conclusions | `paper/sections/06_conclusions.md` | ⚠️ Draft | Main findings + implications + limitations/future work |
 
 ### 3.2 Required End-Matter Sections (in main.tex)
 
@@ -370,16 +367,23 @@ If $q$ data unavailable, renormalize remaining weights.
 | Fig. 2 | Body-axis definition, sign convention, and state interface | Sec. 2 | TODO |
 | Fig. 3 | Experimental condition matrix, repeat policy, and anti-leakage split strategy | Sec. 2 | TODO |
 | Fig. 4 | Model-term map: physical mechanisms → equation blocks → code interfaces | Sec. 3 | TODO |
-| Fig. 5 | CFD credibility summary: mesh refinement and residual convergence | Sec. 4 | TODO |
-| Fig. 6 | Full-AoA $C_X/C_Z/C_m$ curves with high-AoA local enlargement | Sec. 4 | TODO |
-| Fig. 7 | Pressure-center migration $X_{cp}(\alpha)$ with stability-region annotations | Sec. 4 | TODO |
-| Fig. 8 | Representative flow and pressure snapshots at 0°/30°/60°/90° AoA | Sec. 4 | TODO |
-| Fig. 9 | Identification diagnostics: residuals, multi-start convergence, bootstrap CIs | Sec. 5 | TODO |
-| Fig. 10 | Multi-run in-sample and out-of-sample sim-real trajectories ($\theta$, $q$) | Sec. 5 | TODO |
-| Fig. 11 | Time-domain error traces with zero-reference and RMSE bands | Sec. 5 | TODO |
-| Fig. 12 | Condition-normalized metric heatmap and GapScore ranking | Sec. 5 | TODO |
-| Fig. 13 | Sensitivity envelopes for initial energy, BG, and damping uncertainty | Sec. 6 | TODO |
-| Fig. 14 | Strategy surface $J(u_0, \theta_{off})$ with feasible valley regions | Sec. 6 | TODO |
+| Fig. 5 | Free-body force and moment decomposition for the transition-phase model | Sec. 3 | TODO |
+| Fig. 6 | Conceptual interpretation of anisotropic coupling parameters ($\mu_x,\mu_z,\mu_\theta$) | Sec. 3 | TODO |
+| Fig. 7 | CFD verification results: mesh-independence and residual convergence | Sec. 3 | TODO |
+| Fig. 8 | Hydrodynamic coefficient mappings versus attack angle ($C_X/C_Z/C_m$) | Sec. 3 | TODO |
+| Fig. 9 | Pressure-center migration and static-stability-region transition | Sec. 3 | TODO |
+| Fig. 10 | Representative pressure and velocity field patterns at selected attack angles | Sec. 3 | TODO |
+| Fig. 11 | Parameter-identification workflow from segmented data to calibrated parameters | Sec. 3 | TODO |
+| Fig. 12 | Identification diagnostics and uncertainty summaries | Sec. 3 | TODO |
+| Fig. 13 | Validation dataset coverage and split topology across operating conditions | Sec. 4 | TODO |
+| Fig. 14 | Multi-run in-sample and out-of-sample sim-real trajectories ($\theta$, $q$) | Sec. 4 | TODO |
+| Fig. 15 | Time-domain trajectory-error traces with zero-reference and uncertainty bands | Sec. 4 | TODO |
+| Fig. 16 | Condition-wise validation metrics and GapScore ranking map | Sec. 4 | TODO |
+| Fig. 17 | Discrepancy-mode decomposition for representative validation cases | Sec. 4 | TODO |
+| Fig. 18 | Operational success-envelope map in the initial-condition space | Sec. 5 | TODO |
+| Fig. 19 | Control-strategy objective surface $J(u_0, \theta_{off})$ and feasible valley region | Sec. 5 | TODO |
+| Fig. 20 | Sensitivity envelopes under BG shift and damping uncertainty | Sec. 5 | TODO |
+| Fig. 21 | Integrated operating-guidance chart combining feasibility, robustness, and strategy preference | Sec. 5 | TODO |
 
 Detailed requirements for each figure: see `paper/figures/FIGURE_REQUIREMENTS.md`.
 
@@ -549,10 +553,9 @@ C:\AD_v2_stage1_analysis\
 │   │   ├── 01_introduction.md
 │   │   ├── 02_system_and_mission_scenario.md
 │   │   ├── 03_anisotropic_permeability_corrected_dynamics.md
-│   │   ├── 04_cfd_to_model_mapping_and_validation.md
-│   │   ├── 05_parameter_identification_and_model_validation.md  # Merged 05+06
-│   │   ├── 06_sensitivity_analysis_and_design_implications.md   # Renumbered
-│   │   └── 07_conclusions.md                                     # Renumbered
+│   │   ├── 04_model_validation_against_free_decay_experiments.md
+│   │   ├── 05_parametric_analysis_and_design_guidance.md
+│   │   └── 06_conclusions.md
 │   ├── latex/
 │   │   ├── main.tex           # LaTeX main file
 │   │   ├── sections/*.tex     # LaTeX mirrors of Markdown
@@ -565,9 +568,7 @@ C:\AD_v2_stage1_analysis\
 │   │   └── elsarticle-num.bst
 │   ├── figures/
 │   │   └── FIGURE_REQUIREMENTS.md  # [FROZEN] Figure planning
-│   ├── 论文发表计划.md        # [FROZEN] Master plan (directly under paper/)
-│   └── savedpromots/
-│       └── 2026-02-13-工作缓存.md  # [DEPRECATED]
+│   └── OE_AUTHOR_GUIDE_QUICK_REFERENCE.md
 ├── sim_flip/
 │   ├── src/                   # Core simulation modules
 │   │   ├── dynamics.py        # ODE right-hand side
@@ -589,8 +590,8 @@ C:\AD_v2_stage1_analysis\
 │   ├── PIPELINE_OPERATION_GUIDE.md  # [AUTHORITATIVE] Pipeline handbook
 │   └── README_MIGRATION.md   # Legacy→Fixed pipeline mapping
 ├── docs/
-│   ├── AI_WRITING_REFERENCE.md    # ← THIS FILE (unified reference)
-│   └── plans/                     # Historical planning documents
+│   ├── README.md                  # Documentation map (entry point)
+│   └── AI_WRITING_REFERENCE.md    # Writing authority
 ├── figures/                   # Pipeline-generated figures (fig01-fig08)
 └── .vscode/                   # Editor configuration
 ```
@@ -630,10 +631,9 @@ C:\AD_v2_stage1_analysis\
 ## 14. Outstanding Tasks (Writing Roadmap)
 
 ### Priority 1: Complete skeleton sections to submittable quality
-1. Section 4 (CFD): Write credibility summary, coefficient analysis, CP migration, flow snapshots
-2. Section 5 (Identification + Validation): Write protocol details, diagnostic analysis, trajectory comparison, error analysis, metric interpretation
-3. Section 6 (Sensitivity): Write envelope analysis, BG/damping study, strategy surface discussion
-4. Section 7 (Conclusions): Write validated findings summary, limitations restatement, future work
+1. Section 4 (Validation): Write split strategy, in/out-of-sample analysis, metric interpretation, discrepancy analysis
+2. Section 5 (Parametric guidance): Write envelope analysis, BG/damping study, strategy surface discussion, recommended operating region
+3. Section 6 (Conclusions): Write validated findings summary, limitations restatement, future work
 
 ### Priority 2: Data & evidence expansion
 6. Expand experiments from 3 to 12 conditions
@@ -657,13 +657,11 @@ This document consolidates and supersedes:
 
 | Former Document | Status | Disposition |
 |-----------------|--------|-------------|
-| `paper/README.md` | Active | Retained as project README; frozen rules absorbed here |
-| `paper/latex/README.md` | Active | Retained as build instructions; formatting rules absorbed here |
-| `paper/论文发表计划.md` | **Frozen master plan** | Retained; all content absorbed here |
-| `paper/savedpromots/2026-02-13-工作缓存.md` | **Deprecated** | Superseded by this document; marked for archival |
-| `docs/plans/2026-02-12-mission-oriented-paper-writing-design.md` | **Historical** | Archived; narrative rules absorbed here |
+| `paper/README.md` | Active | Retained as paper scaffold index |
+| `paper/latex/README.md` | Active | Retained as LaTeX build instructions |
+| `docs/README.md` | Active | Canonical documentation map for AI collaboration |
 | `paper/figures/FIGURE_REQUIREMENTS.md` | Active | Retained as figure-specific reference; summary absorbed here |
-| `sim_flip/README.md` | **Merged** | Content merged into PIPELINE_OPERATION_GUIDE.md |
+| `sim_flip/README.md` | Active | Retained as entry and pointer to pipeline handbook |
 | `sim_flip/PIPELINE_OPERATION_GUIDE.md` | **Authoritative** | Retained as sole pipeline handbook |
 
 **Rule**: When this document and a former document conflict, **this document wins**.

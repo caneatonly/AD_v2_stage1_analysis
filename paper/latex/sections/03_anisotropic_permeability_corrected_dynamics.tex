@@ -1,17 +1,17 @@
 % Converted from: paper/sections/03_anisotropic_permeability_corrected_dynamics.md
-\section{Dynamic model formulation}
+\section{Dynamic Model Development and Parameter Determination}
 
-\subsection{Governing equations}
+\subsection{Governing Equations}
 
-This section introduces the 3-DOF governing model for the horizontal-launch to vertical-stabilization phase, with frozen interfaces $\nu=[u,w,q]^T$ and $\eta=[\theta]$. The body-axis and sign conventions follow Section~2 (Fig.~\ref{fig:conventions}): $x_b$ forward, $z_b$ downward, nose-up pitch positive, and $q=d\theta/dt$ about $+y_b$.
+This section presents a 3-DOF governing model for the horizontal-launch to vertical-stabilization phase, with state interfaces $\nu=[u,w,q]^T$ and $\eta=[\theta]$. The body-axis convention follows Section~2 and Fig.~\ref{fig:conventions}: $x_b$ forward, $z_b$ downward, positive pitch nose-up, and $q=d\theta/dt$ about $+y_b$.
 
 The simulation state is
 \begin{equation}
 	\mathbf{x} = [u,\; w,\; q,\; \theta]^T,
 \end{equation}
-where $u$ and $w$ are body-frame translational velocities, $q$ is pitch rate, and $\theta$ is the pitch angle. The kinematic closure is $\dot{\theta}=q$.
+where $u$ and $w$ are body-frame translational velocities, $q$ is pitch rate, and $\theta$ is pitch angle. The kinematic closure is $\dot{\theta}=q$.
 
-For the present phase of interest, the governing dynamics are written in a compact planar Fossen-style form with effective inertias (defined in Section~\ref{sec:added-mass}):
+For the present phase of interest, the governing dynamics are written in a compact planar Fossen-style form with effective inertias (defined in Section~3.2):
 \begin{align}
 	m_x\,\dot{u} - m_z\,wq & = X_{cfd}(\alpha) - (W - B)\,\sin\theta + T,                                           \\
 	m_z\,\dot{w} + m_x\,uq & = Z_{cfd}(\alpha) + (W - B)\,\cos\theta,                                               \\
@@ -19,83 +19,132 @@ For the present phase of interest, the governing dynamics are written in a compa
 	\dot{\theta}           & = q.
 \end{align}
 
-Here, $W=m_{dry}g$ is the weight magnitude and $B=B_{mass}g$ is the buoyancy magnitude (implemented as equivalent mass in the parameter tree). The terms $T$ and $M_{thruster}$ are optional actuation inputs; in the free-decay identification setting they are set to zero.
+Here, $W=m_{dry}g$ is the weight magnitude and $B=B_{mass}g$ is the buoyancy magnitude. The terms $T$ and $M_{thruster}$ are optional actuation inputs; they are set to zero in free-decay parameter determination.
 
-Hydrodynamic forces and moment are represented by static-CFD tables through a dynamic-pressure scaling:
+Hydrodynamic forces and moment are represented by static mappings through dynamic-pressure scaling:
 \begin{equation}
 	V = \sqrt{u^2 + w^2}, \qquad Q = \tfrac{1}{2}\rho V^2,
 \end{equation}
-with a numerical safeguard $Q=0$ when $V<V_{eps}$ for robustness. The CFD-driven force and moment are
+with a numerical safeguard $Q=0$ when $V<V_{eps}$. The model uses
 \begin{align}
 	X_{cfd} & = Q\,A_{ref}\,C_X(\alpha),          \\
 	Z_{cfd} & = Q\,A_{ref}\,C_Z(\alpha),          \\
-	M_{cfd} & = Q\,A_{ref}\,L_{ref}\,C_m(\alpha),
+	M_{cfd} & = Q\,A_{ref}\,L_{ref}\,C_m(\alpha).
 \end{align}
-where $A_{ref}$ and $L_{ref}$ are fixed reference area and length. The attack angle is computed by the frozen convention
+
+The attack angle is computed by
 \begin{equation}
 	\alpha_{raw} = \mathrm{atan2}(w, u),
 \end{equation}
-and mapped/clamped to the CFD lookup range at runtime (details in Section~4). Following the equation-governance rule, no additional explicit Munk-moment term is introduced when $C_m(\alpha)$ already encodes the corresponding static effect.
+and mapped/clamped to the lookup range at runtime.
 
-\subsection{Anisotropic permeability correction}
-\label{sec:added-mass}
+\subsection{Anisotropic Permeability Correction}
 
-The main modeling novelty in this section is an anisotropic permeability correction to the added-mass / added-inertia totals. We conceptually separate (i) an outer-fluid added-mass set and (ii) an inner-water coupling contribution. Three directional coupling parameters
+The model introduces an anisotropic permeability correction to the added-mass and added-inertia terms. Two contributions are considered: (i) outer-fluid added mass and (ii) inner-water coupling. Three directional coupling parameters
 \begin{equation}
 	\mu_x,\;\mu_z,\;\mu_{\theta} \in [0,1]
 \end{equation}
-represent the fraction of inner-water inertia that effectively couples to the rigid-body motion in surge ($x$), heave ($z$), and pitch ($\theta$) channels, respectively. This formulation is intentionally compact and physically interpretable: $\mu \approx 0$ indicates weak coupling (high internal permeability / relative flow), while $\mu \approx 1$ indicates strong coupling (near-lumped inner water).
+represent the fraction of inner-water inertia coupled to rigid-body motion in surge, heave, and pitch, respectively.
 
-Using the project sign convention (typical Fossen form expects negative added-mass derivatives), the total added-mass / added-inertia terms are defined as:
+Using the project sign convention (Fossen-style negative added-mass derivatives), total added terms are
 \begin{align}
 	X_{\dot{u},total} & = X_{\dot{u},outer} - \mu_x\,m_{water,inner},        \\
 	Z_{\dot{w},total} & = Z_{\dot{w},outer} - \mu_z\,m_{water,inner},        \\
 	M_{\dot{q},total} & = M_{\dot{q},outer} - \mu_{\theta}\,I_{water,inner}.
 \end{align}
 
-The corresponding effective inertias used in the ODE denominators are
+The corresponding effective inertias in the ODE denominators are
 \begin{equation}
 	m_x = m_{dry} - X_{\dot{u},total}, \qquad
 	m_z = m_{dry} - Z_{\dot{w},total}, \qquad
 	I_y = I_{yy} - M_{\dot{q},total}.
 \end{equation}
 
-All terms above are frozen by the parameter contract and grouped into rigid-body, outer-added-mass, and permeability categories in the project configuration. Consistent with the implementation, the translational denominators use $m_{dry}$ (not $m_{wet}$).
-
-\subsection{Restoring and damping terms}
-
-The model retains Fossen-style rigid-body coupling through the Coriolis-like cross terms $\pm m\,\cdot\,(\cdot)\,q$ in the surge/heave equations. Restoring, damping, and optional configuration-dependent terms are defined as follows.
-
-Hydrostatic restoring moment is modeled by a buoyancy-center offset $(x_b,z_b)$ in the body frame:
-\begin{equation}
-	M_{bg}(\theta) = B\,(z_b\,\sin\theta + x_b\,\cos\theta),
-\end{equation}
-where $B=B_{mass}g$.
-
-Rotational damping is retained as an identification-oriented term (not obtained from static CFD tables):
-\begin{equation}
-	M_{damp}(q) = -\left(d_q + d_{q,abs}|q|\right)q.
-\end{equation}
-
-If a cable restoring mechanism is enabled in the hardware configuration, its contribution is modeled as a linear torsional spring-damper around an equilibrium angle $\theta_{eq}$:
-\begin{equation}
-	M_{cable}(\theta,q) = -K_{cable}(\theta - \theta_{eq}) - C_{cable,q}\,q.
-\end{equation}
-
-\subsection{Implementation summary}
-
-The manuscript equations above map one-to-one to the repository implementation:
-\begin{itemize}
-	\item State ordering: $y=[u,w,q,\theta]$ is used consistently in the ODE right-hand side and event functions.
-	\item Kinematics and CFD inputs: $V$, $Q$, and $\alpha$ are computed from the body-frame velocities; coefficient interpolation uses the angle-dependent lookup table.
-	\item Permeability correction: added-mass totals and effective inertias are derived from the parameter tree.
-	\item All physical parameters ($\rho$, $g$, $A_{ref}$, $L_{ref}$, $m_{dry}$, $I_{yy}$, $m_{water,inner}$, $I_{water,inner}$, $X_{\dot{u},outer}$, $Z_{\dot{w},outer}$, $M_{\dot{q},outer}$, $\mu_x$, $\mu_z$, $\mu_\theta$, $B_{mass}$, $x_b$, $z_b$, $d_q$, $d_{q,abs}$, and optional cable terms) are single-sourced in the project configuration file.
-\end{itemize}
+All terms above are computed in the project parameter pipeline. Consistent with implementation, translational denominators use $m_{dry}$ (not $m_{wet}$).
 
 \begin{figure}[htbp]
 	\centering
 	% TODO: Insert Fig. 4 here (see paper/figures/FIGURE_REQUIREMENTS.md).
 	\caption{Model-term map from physical mechanisms to equation blocks and code interfaces.}
-	\label{fig:model-term-map}
+	\label{fig:sec3-model-term-map}
 \end{figure}
 
+The force and moment decomposition in the body-fixed frame is summarized in Fig.~\ref{fig:sec3-fbd}.
+
+\begin{figure}[htbp]
+	\centering
+	% TODO: Insert Fig. 5 here.
+	\caption{Free-body force and moment decomposition for the transition-phase model.}
+	\label{fig:sec3-fbd}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+	% TODO: Insert Fig. 6 here.
+	\caption{Conceptual interpretation of anisotropic internal-water coupling parameters ($\mu_x$, $\mu_z$, $\mu_\theta$).}
+	\label{fig:sec3-aniso-coupling-concept}
+\end{figure}
+
+\subsection{Hydrodynamic Coefficient Acquisition from CFD}
+
+CFD is used to close the dynamic model by supplying static mappings $C_X(\alpha)$, $C_Z(\alpha)$, $C_m(\alpha)$, and the pressure-center trend $X_{cp}(\alpha)$ for mechanism interpretation. CFD is positioned as supporting evidence for model closure.
+
+Numerical verification is provided through mesh-independence and residual-convergence summaries to support coefficient reliability.
+
+\begin{figure}[htbp]
+	\centering
+	% TODO: Insert Fig. 7 here.
+	\caption{CFD verification results: mesh-independence and residual convergence.}
+	\label{fig:sec3-cfd-credibility}
+\end{figure}
+
+The coefficient mappings are reported across the full attack-angle range required for transition simulation, with local enlargement in high-angle regions where response sensitivity is strongest.
+
+\begin{figure}[htbp]
+	\centering
+	% TODO: Insert Fig. 8 here.
+	\caption{Hydrodynamic coefficient mappings versus attack angle ($C_X$, $C_Z$, $C_m$).}
+	\label{fig:sec3-cfd-coeffs}
+\end{figure}
+
+Pressure-center migration is then analyzed to interpret pitch-moment behavior and static stability-region transition.
+
+\begin{figure}[htbp]
+	\centering
+	% TODO: Insert Fig. 9 here.
+	\caption{Pressure-center migration and static-stability-region transition versus attack angle.}
+	\label{fig:sec3-xcp}
+\end{figure}
+
+Representative flow and pressure fields at selected angles are finally presented to support the observed coefficient trends and pressure-center movement.
+
+\begin{figure}[htbp]
+	\centering
+	% TODO: Insert Fig. 10 here.
+	\caption{Representative pressure and velocity field patterns at selected attack angles.}
+	\label{fig:sec3-flow-snapshots}
+\end{figure}
+
+\subsection{Parameter Identification Procedure}
+
+After model structure and coefficient mappings are fixed, parameters are determined using a protocolized free-decay identification procedure. The workflow includes preprocessing, deterministic segmentation, condition-level split control, energy-based damping estimation, and ODE residual minimization with multi-start initialization. Bootstrap analysis is included when uncertainty quantification is required.
+
+\begin{figure}[htbp]
+	\centering
+	% TODO: Insert Fig. 11 here.
+	\caption{Parameter-identification workflow from segmented free-decay data to calibrated model parameters.}
+	\label{fig:sec3-id-workflow}
+\end{figure}
+
+The identification stage reports residual diagnostics, convergence behavior across starts, and confidence summaries to assess parameter stability and identifiability.
+
+\begin{figure}[htbp]
+	\centering
+	% TODO: Insert Fig. 12 here.
+	\caption{Identification diagnostics and uncertainty summaries (residuals, multi-start convergence, bootstrap intervals).}
+	\label{fig:sec3-id-diagnostics}
+\end{figure}
+
+\subsection{Identified Parameter Set and Model Closure}
+
+Section~3 yields a closed model package containing (i) fixed structural and hydrostatic parameters, (ii) CFD-supported static hydrodynamic mappings, and (iii) identified dynamic parameters for transition-phase simulation. This package is used without re-tuning in Section~4 for validation against free-decay experiments.
