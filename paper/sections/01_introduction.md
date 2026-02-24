@@ -1,25 +1,29 @@
 # 1. Introduction
 
-## 1.1 Engineering Background and Motivation
+## 1.1 Mission Context and Engineering Motivation
 
-Underwater corner reflectors serve as passive markers in marine detection and localization tasks. Deployment reliability depends on both the reflector and the carrier platform dynamics during posture transition. In the present deployment scenario, the platform is released near horizontal and is required to stabilize to a near-vertical working posture. The launch-to-stabilization transition is therefore treated as the primary engineering problem.
+Underwater corner reflectors are widely used as passive high-contrast markers for marine detection and localization tasks. In practical deployment, however, system reliability is governed not only by the reflector itself but also by the transition behavior of the carrier platform immediately after release. For the mission considered in this study, the platform is released in a compact, near-horizontal configuration and must autonomously evolve toward a near-vertical working posture before the payload can be regarded as operationally effective. The horizontal-launch to vertical-stabilization transition is therefore a mission-defining engineering requirement rather than a secondary kinematic detail.
 
-## 1.2 Related Work and Gap Identification
+This problem setting differs from the more common objective of general-purpose underwater vehicle maneuvering or trajectory tracking. Here, the platform is intentionally designed around a single critical mission phase, and the success criterion is tied to robust posture transition under constrained geometry, mass distribution, and hydrostatic layout. Consequently, platform design, dynamic modeling, parameter identification, and experimental validation must be treated as a coupled workflow rather than as independent tasks.
 
-Existing underwater dynamics studies employ established approaches for hydrodynamic modeling and parameter identification, but most are developed for general-purpose vehicles or for method-focused demonstrations. For mission-specific deployment platforms, this separation introduces uncertainty because structural layout, internal-water coupling, and operating protocol are strongly coupled. Parameter transferability also degrades when large-attitude transition is intrinsic to operation. A suitable framework therefore requires integrated platform design, physically grounded dynamics, and experiment-based validation `[R2-R6]`.
+## 1.2 Related Work and Remaining Gap
 
-## 1.3 Objectives and Contributions
+Existing studies in underwater dynamics and marine mechatronic systems provide mature tools for rigid-body modeling, hydrodynamic coefficient estimation, CFD-assisted mechanism analysis, and experiment-based parameter identification `[R2-R6]`. These methods are essential foundations for the present work. Nevertheless, direct transfer of generic models and parameters is often unreliable when a system exhibits strong mission-specific coupling among structure, buoyancy arrangement, internal fluid motion, and deployment protocol, particularly in large-attitude transition regimes.
 
-This study addresses platform design and dynamic characterization in a single workflow. A mission-oriented self-suspending platform is developed with explicit constraints on structure, mass-buoyancy distribution, and deployment sequence. For the transition phase, an anisotropic permeability-corrected 3-DOF model is formulated. The parameters `mu_x`, `mu_z`, and `mu_theta` represent directional internal-water coupling in surge, heave, and pitch.
+Two gaps are therefore important for the present application. First, many studies prioritize either platform hardware realization or model identification, while the deployment mission requires both to be co-designed and reported within a single engineering evidence chain. Second, static CFD information is frequently used without a clear governance rule for what it replaces in the reduced-order dynamics, which can lead to term duplication or ambiguous physical interpretation. A mission-oriented framework is needed in which the platform role, model structure, coefficient closure logic, and validation protocol are jointly defined and reproducible.
 
-Figure 1 summarizes the platform architecture and deployment workflow used in this study.
+## 1.3 Objectives and Contributions of This Study
 
-Static CFD is used to obtain hydrodynamic coefficient mappings required for model closure. Rotational damping is retained as an identified term. Model parameters are determined from free-decay data, followed by out-of-sample simulation-to-experiment validation and parametric design analysis.
+The objective of this paper is to establish a reproducible platform-model-validation workflow for the transition phase of a mission-oriented self-suspending underwater deployment platform. The platform is designed to achieve passive posture recovery toward the working orientation, while the dynamic model is formulated to preserve physical interpretability and remain compatible with experimentally identifiable parameters.
 
-The contributions are threefold: (1) design, implementation, and experimental characterization of a mission-oriented self-suspending deployment platform; (2) an anisotropic permeability-corrected 3-DOF model with CFD-supported hydrodynamic closure; and (3) an evidence chain from parameter determination to out-of-sample validation and design-oriented parametric analysis.
+To this end, we develop an anisotropic permeability-corrected 3-DOF model in surge, heave, and pitch, in which \(\mu_x\), \(\mu_z\), and \(\mu_{\theta}\) describe directional inner-water coupling strength. Static CFD-derived hydrodynamic mappings are used as model-closure evidence for \(C_X(\alpha)\), \(C_Z(\alpha)\), and \(C_m(\alpha)\), whereas rotational damping is retained as an experiment-identified component. Parameters are then determined from protocolized free-decay data using condition-aware split control, followed by simulation-to-experiment validation and sensitivity-driven design analysis.
 
-## 1.4 Scope and Paper Organization
-
-Conclusions are bounded to the current geometry, mass distribution, and actuation strategy. Section 2 describes the platform configuration and deployment scenario. Section 3 presents model development and parameter determination. Section 4 reports validation against free-decay experiments. Section 5 presents parametric analysis and design guidance. Section 6 summarizes conclusions, limitations, and future work.
+The principal contribution of the paper is not a standalone model or a standalone prototype, but a closed engineering evidence chain that links mission requirements, platform configuration, interpretable dynamics, parameter determination, and bounded design guidance under the current hardware configuration.
 
 [Fig. 1. Mission-oriented platform architecture and deployment workflow. Insert here.]
+
+## 1.4 Scope, Claim Boundary, and Paper Organization
+
+This paper is deliberately scoped to the horizontal-launch to vertical-stabilization phase. Closed-loop depth control, long-duration mission behavior, and broader mission execution logistics are outside the present study and are discussed only as future extensions. In addition, all conclusions are explicitly bounded to the current geometry, mass distribution, buoyancy layout, and actuation strategy; the results should not be interpreted as universal laws for all underwater deployment platforms.
+
+The remainder of the paper is organized as follows. Section 2 defines the platform configuration, coordinate conventions, and experimental data protocol. Section 3 presents the dynamic model, anisotropic permeability correction, CFD-based hydrodynamic closure, and parameter determination procedure. Section 4 evaluates the calibrated model against free-decay experiments under condition-level split control and analyzes discrepancy modes. Section 5 develops parametric analyses and deployment-oriented design guidance based on the validated model package. Section 6 summarizes the main findings, engineering implications, limitations, and future work.

@@ -1,13 +1,25 @@
 # 6. Conclusions
 
-## 6.1 Main Findings
+## 6.1 Summary of the Study and Main Findings
 
-This study presents a mission-oriented platform-model workflow for the horizontal-launch to vertical-stabilization phase, combining platform configuration, anisotropic permeability-corrected dynamics, CFD-supported hydrodynamic closure, and protocolized parameter determination.
+This paper presented a mission-oriented platform-model-validation workflow for the horizontal-launch to vertical-stabilization phase of a self-suspending underwater corner-reflector deployment platform. The study treated platform configuration and dynamic characterization as coupled engineering tasks and developed a reduced-order modeling framework that remains physically interpretable while being compatible with protocolized free-decay identification. The resulting model combines a planar 3-DOF transition-phase description, anisotropic permeability-corrected inertial coupling, CFD-supported static hydrodynamic closure, and experiment-based dynamic parameter determination.
+
+The central outcome of the work is a closed evidence chain rather than a single isolated artifact. Platform design assumptions were made explicit, the reduced-order equations were governed by clear replacement and non-duplication rules, parameters were determined using a reproducible pipeline with condition-level split control, and the calibrated model package was carried forward without retuning to validation and parametric design analysis. This structure supports engineering interpretation and reduces ambiguity when extending the framework to expanded datasets.
 
 ## 6.2 Engineering Implications
 
-Validation and parametric analysis provide design-oriented guidance for deployment operation, including condition sensitivity and operating-region interpretation under the calibrated model package.
+From an engineering perspective, the study provides a practical route for converting mission-specific deployment requirements into a validated dynamic model and then into bounded operating guidance. The framework is particularly useful when the transition phase, rather than steady cruising or closed-loop tracking, determines mission success. By explicitly connecting validation discrepancy modes to the uncertainty-aware design analysis, the paper also demonstrates how model limitations can inform decision-making instead of being treated merely as reporting caveats.
 
-## 6.3 Limitations and Future Work
+A second practical implication is methodological. The manuscript shows how CFD and free-decay experiments can play complementary roles in a reduced-order model: CFD supplies static hydrodynamic closure and mechanism-support evidence, whereas dynamic damping and coupling parameters are constrained by experimental identification. This division of labor helps preserve interpretability and avoids over-claiming what static CFD alone can determine.
 
-Conclusions are limited to the current geometry, mass distribution, and actuation strategy. Future research directions include expanded condition coverage, deeper uncertainty quantification, and closed-loop depth-control integration beyond the current transition-phase scope.
+## 6.3 Limitations
+
+The conclusions of this paper are intentionally limited to the current platform geometry, mass distribution, buoyancy layout, and actuation strategy. The available experimental dataset in the present repository stage is also limited relative to the full target condition matrix, which constrains the strength of statistical generalization claims. In addition, the identification and validation framework prioritizes the transition phase and does not attempt to model broader mission behaviors such as long-duration motion, environmental disturbance rejection, or closed-loop depth control.
+
+These limitations are not incidental; they are part of the claim boundary of the study. The manuscript is designed to provide a defensible engineering characterization of a mission-critical phase under explicit assumptions, rather than a universal dynamic model for all underwater deployment systems.
+
+## 6.4 Future Work
+
+Future work will focus on expanding the free-decay condition matrix, improving uncertainty quantification through multi-start and bootstrap-enabled studies, and strengthening out-of-sample validation across broader operating conditions. Additional work is also needed to integrate the transition-phase model into a higher-level deployment and control framework that includes post-stabilization behaviors and closed-loop objectives.
+
+Beyond the current platform, the most transferable outcome of this study is the workflow itself: mission-informed platform definition, equation-governed reduced-order modeling, reproducible parameter determination, condition-level validation, and uncertainty-aware design guidance. Applying the same workflow to revised geometries or alternative actuation concepts is a natural next step for developing configuration-specific deployment tools with clearer evidence traceability.

@@ -1,15 +1,21 @@
-# Paper Scaffold
+# Paper Workspace
 
 This directory contains manuscript sources and publication assets.
 
-## Directory layout
+## Workspace Layout
 
-- `sections/`: authoritative manuscript drafts in Markdown
+- `sections/`: authoritative manuscript drafts in Markdown (`paper/sections/*.md`)
 - `figures/`: figure requirements and generated manuscript figures
-- `tables/`: generated manuscript tables
-- `latex/`: LaTeX assembly and build artifacts (must mirror Markdown content)
+- `latex/`: LaTeX assembly and build artifacts (must stay aligned with Markdown)
+- `elsarticle/`: local Elsevier template/class assets
 
-## Active section files
+## Source-of-Truth Rule (important)
+
+- Manuscript content authority: `paper/sections/*.md`
+- LaTeX files in `paper/latex/sections/*.tex` are mirror/assembly targets
+- Do not make long-term content edits in LaTeX only
+
+## Active Section Files
 
 - `00_abstract.md`
 - `00a_nomenclature.md`
@@ -20,9 +26,16 @@ This directory contains manuscript sources and publication assets.
 - `05_parametric_analysis_and_design_guidance.md`
 - `06_conclusions.md`
 
-## Collaboration entry points
+## Collaboration Entry Points (canonical docs)
 
-- Project-wide writing authority: `docs/AI_WRITING_REFERENCE.md`
-- Documentation map: `docs/README.md`
-- Journal quick policy: `paper/OE_AUTHOR_GUIDE_QUICK_REFERENCE.md`
-- Figure-specific requirements: `paper/figures/FIGURE_REQUIREMENTS.md`
+- Project-wide documentation map: `docs/README.md`
+- Writing governance / frozen claims / notation rules: `docs/AI_WRITING_REFERENCE.md`
+- Figure-specific requirements and placeholder policy: `paper/figures/FIGURE_REQUIREMENTS.md`
+- LaTeX workspace/build instructions: `paper/latex/README.md`
+
+## Common Tasks -> Open These Docs First
+
+- Revise claims, scope, or manuscript wording policy -> `docs/AI_WRITING_REFERENCE.md`
+- Add or reorder figure placeholders -> `paper/figures/FIGURE_REQUIREMENTS.md`
+- Build or debug PDF compilation -> `paper/latex/README.md`
+- Draft or revise section prose -> target file in `paper/sections/`

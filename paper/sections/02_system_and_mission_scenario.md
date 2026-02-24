@@ -1,35 +1,31 @@
 # 2. Platform Configuration and Deployment Scenario
 
-## 2.1 Mission-Oriented Platform Design
+## 2.1 Mission-Driven Platform Configuration
 
-The platform is developed for underwater corner-reflector deployment, where the reflector serves as a passive high-contrast marker for marine detection and localization tasks. The key challenge is reliable posture transition after release, rather than payload placement alone. The platform is required to be deployable in a compact launch state and to stabilize autonomously to the working posture.
+The platform studied in this work is developed for underwater corner-reflector deployment, where the reflector acts as a passive marker and the carrier platform must rapidly achieve an operational posture after release. The core engineering challenge is not merely transporting the payload but ensuring a reliable post-release attitude transition under practical deployment constraints. Accordingly, the platform is designed as a self-suspending system in which structural layout, mass distribution, and buoyancy placement are tuned for passive posture recovery during the transition phase.
 
-Unlike general-purpose underwater-vehicle studies, the present work is driven by a specific deployment requirement. Transition dynamics are analyzed because they directly affect deployment success and operational readiness. Mission details are abstracted for confidentiality, while dynamic assumptions and identification protocol are kept explicit for reproducibility.
+The hardware concept combines a rigid-body frame, a prescribed buoyancy-center offset in the body frame, inner-water coupling effects induced by the platform structure, and an optional cable-related restoring contribution in the current implementation. This combination is central to the system behavior and motivates the modeling strategy adopted in Section 3. Mission-sensitive operational details are intentionally abstracted, but the physical assumptions that affect the transition dynamics are stated explicitly to preserve reproducibility.
 
-The proposed system is a self-suspending underwater platform with coupled structural and hydrostatic design. The architecture is defined by (i) rigid-body mass distribution, (ii) buoyancy-center placement in the body frame, (iii) internal-water coupling represented by permeability-corrected terms, and (iv) optional cable-related restoring effects in the current hardware configuration.
+For the nominal configuration used throughout this paper, the rigid-body dry mass is \(m_{dry}=2.55\,\mathrm{kg}\), the wet mass is \(m_{wet}=2.76\,\mathrm{kg}\), and the inner-water equivalent mass is \(m_{water,inner}=0.21\,\mathrm{kg}\). The rigid-body pitch inertia is \(I_{yy}=0.05741\,\mathrm{kg\,m^2}\), and the inner-water equivalent pitch inertia is \(I_{water,inner}=0.01119\,\mathrm{kg\,m^2}\). Buoyancy is represented through an equivalent mass \(B_{mass}=2.55\,\mathrm{kg}\) with nominal body-frame offset \(x_b=0.02535\,\mathrm{m}\) and \(z_b=0\). These parameters define the baseline physical configuration for model closure, identification, and evaluation.
 
-For the nominal setup, the key parameters are dry mass \(m_{dry}=2.55\,\mathrm{kg}\), wet mass \(m_{wet}=2.76\,\mathrm{kg}\), inner-water equivalent mass \(m_{water,inner}=0.21\,\mathrm{kg}\), pitch inertia \(I_{yy}=0.05741\,\mathrm{kg\,m^2}\), and inner-water inertia \(I_{water,inner}=0.01119\,\mathrm{kg\,m^2}\). Buoyancy is represented by equivalent mass \(B_{mass}=2.55\,\mathrm{kg}\) with nominal offset \(x_b=0.02535\,\mathrm{m}\). These values define the baseline configuration used in all simulation-experiment comparisons.
+## 2.2 Deployment Phase Definition and Coordinate Conventions
 
-## 2.2 Coordinate System and State Definitions
+The present analysis targets a single mission-critical phase: horizontal launch followed by passive transition toward vertical stabilization. Under the convention adopted in this study, the stabilized working posture lies near \(\theta=90^\circ\). The analysis therefore focuses on the transient evolution from the release state to the stabilized posture and excludes downstream control tasks such as depth regulation or long-horizon trajectory management.
 
-The analysis focuses on one mission-critical phase: horizontal launch to vertical stabilization. The stabilized posture is defined near \(\theta=90^{\circ}\) under the adopted convention. Closed-loop depth-keeping and long-horizon mission execution are outside the present scope.
-
-The state vectors are defined as \(\nu=[u,w,q]^T\) and \(\eta=[\theta]\). The body-axis convention is \(x_b\) forward, \(z_b\) downward, positive pitch nose-up, and \(q=d\theta/dt\) about \(+y_b\). Angle of attack is defined by \(\alpha=\mathrm{atan2}(w,u)\). These fixed definitions enforce consistency among coefficient mapping, parameter determination, and dynamic simulation.
+A fixed body-axis convention is used throughout the repository and manuscript to avoid sign inconsistencies across CFD post-processing, parameter identification, and time-domain simulation. The body axes are defined as \(x_b\) forward and \(z_b\) downward. Positive pitch is nose-up, and pitch rate is \(q=\dot{\theta}\) about \(+y_b\). The state interfaces are \(\nu=[u,w,q]^T\) and \(\eta=[\theta]\), and the angle of attack for hydrodynamic lookup is defined by \(\alpha=\mathrm{atan2}(w,u)\). These conventions are frozen in the implementation and should be treated as part of the model contract.
 
 [Fig. 2. Body-axis definition, sign convention, and state interface (`u, w, q, theta`). Insert here.]
 
-## 2.3 Experimental Conditions and Data Protocol
+## 2.3 Experimental Program and Data Governance
 
-The operational sequence in each run is initial vertical rest, recording start, single manual excitation, free decay, and final rest. Each raw run contains one excitation-decay event. This protocol enables deterministic segmentation and condition-level split control.
+Free-decay experiments provide the primary identification and validation data for this paper. Each run follows a protocolized sequence consisting of initial stabilization, recording start, a single manual excitation, free decay, and final stabilization. One raw file is required to contain only one excitation-decay event. This one-event-per-file rule is essential for deterministic preprocessing and segmentation and directly supports downstream condition-level split control.
 
-Protocolized run definitions, deterministic segmentation, and condition-level split control follow established experimental-validation practice `[R3-R6]`.
-
-The current baseline dataset contains three free-decay segments, with planned expansion to a 12-condition matrix over \(\theta_0\) and \(q_0\) levels (minimum two repeats per condition). Data are split by condition blocks rather than random samples. Leave-one-theta-level-out validation is adopted to evaluate extrapolation behavior.
+Raw files are stored under the pipeline data contract and must satisfy a fixed column schema with monotonic timestamps. The current baseline repository contains three free-decay segments, while the planned expansion targets a 12-condition matrix spanning \(\theta_0\) and \(q_0\) levels with repeated trials. The key design choice for data governance is that splits are defined by operating-condition blocks rather than random sample points. This avoids leakage between calibration and validation when waveform segments from the same condition would otherwise share strong temporal and dynamic similarity.
 
 [Fig. 3. Experimental condition matrix, repeat policy, and anti-leakage split strategy. Insert here.]
 
-## 2.4 Scope and Assumptions
+## 2.4 System Boundary and Assumptions for Subsequent Sections
 
-Three assumptions delimit the claims in this paper. First, mission details are abstracted while the deployment role remains explicit. Second, conclusions are restricted to the current geometry, mass distribution, and actuation strategy. Third, CFD is used for hydrodynamic coefficient acquisition and mechanism support, rather than as a standalone novelty claim.
+Three assumptions delimit the claims made in the remainder of the paper. First, mission context is retained at the level required to motivate the platform and transition-phase objective, but mission-sensitive details are abstracted. Second, the conclusions are intentionally restricted to the current platform geometry, mass-buoyancy configuration, and actuation strategy. Third, CFD is used as hydrodynamic closure and mechanism-support evidence, not as a standalone novelty claim independent of the platform-model-validation workflow.
 
-Under these assumptions, this section defines the system boundary and engineering context for model development, parameter determination, and validation.
+With these assumptions, Section 2 establishes the physical and experimental boundary conditions needed for the reduced-order model, the parameter determination protocol, and the validation logic developed in the following sections.
