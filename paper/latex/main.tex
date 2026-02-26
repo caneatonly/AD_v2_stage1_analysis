@@ -39,52 +39,59 @@
 \begin{document}
 \begin{frontmatter}
 
-	\title{Design and Characterization of a Mission-Oriented Self-Suspending Underwater Platform with Anisotropic Permeability-Corrected Dynamics and Experimental Identification}
+\title{Design and Characterization of a Mission-Oriented Self-Suspending Underwater Platform with Anisotropic Permeability-Corrected Dynamics and Experimental Identification}
 
-	% TODO: Replace with real author list and affiliations (official elsarticle style).
-	\author[inst1]{First Author\corref{cor1}}
-	\author[inst1]{Second Author}
-	\cortext[cor1]{Corresponding author.}
-	\ead{corresponding.author@example.com}
-	\affiliation[inst1]{organization={Affiliation},
-		addressline={},
-		city={},
-		postcode={},
-		state={},
-		country={}}
+% TODO: Replace with real author list and affiliations (official elsarticle style).
+\author[inst1]{First Author\corref{cor1}}
+\author[inst1]{Second Author}
+\cortext[cor1]{Corresponding author.}
+\ead{corresponding.author@example.com}
+\affiliation[inst1]{organization={Affiliation},
+  addressline={},
+  city={},
+  postcode={},
+  state={},
+  country={}}
 
-	\begin{abstract}
-		Underwater corner reflectors are used as passive high-contrast markers for marine detection and localization tasks, and their deployment reliability depends on the carrier platform. This paper presents the design and characterization of a mission-oriented self-suspending underwater platform developed for corner-reflector deployment. The platform is required to pass through a horizontal-launch to vertical-stabilization transition before reaching its working posture; therefore, platform architecture, mass-buoyancy arrangement, and deployment workflow are treated as primary engineering contributions.
+\begin{abstract}
+Underwater corner reflectors are widely studied as passive markers/targets for marine sensing and localization, yet dedicated open-literature reports on miniature deployment platforms for corner-reflector placement are limited. This paper reports the design and characterization of a mission-oriented self-suspending underwater platform developed for corner-reflector deployment, and treats the platform architecture, mass--buoyancy arrangement, and deployment workflow as primary engineering contributions.
 
-		For this transition phase, an anisotropic permeability-corrected 3-DOF dynamic model is developed with three physically interpretable coupling parameters, $\mu_x$, $\mu_z$, and $\mu_\theta$, to represent directional internal-water coupling effects. CFD-derived static hydrodynamic mappings are used as model evidence for force and moment replacement logic, while rotational damping is retained as an identification-oriented term. A closed validation chain is established through free-decay identification, out-of-sample simulation-to-experiment evaluation, and sensitivity-based envelope analysis. The identification and evaluation stages use consistent initialization and condition-level split rules to reduce leakage risk and support fair sim-real comparison.
+For the platform considered here, the mission-critical phase is a transition from a compact near-horizontal release with nonzero initial velocity to a near-vertical working posture. To analyze and guide this phase, we develop an interpretable planar three-degree-of-freedom dynamic model in surge, heave, and pitch. Directional inner-water coupling is represented through anisotropic permeability-corrected inertial terms with three bounded parameters, $\mu_x$, $\mu_z$, and $\mu_{\theta}$. Static hydrodynamic loads are closed using CFD-derived coefficient mappings as a controlled replacement of static force and moment terms, while rotational damping and remaining dynamic parameters are identified from protocolized free-decay experiments under condition-aware split governance.
 
-		The resulting platform-model framework provides consistent reconstruction of transition behavior and practical guidance for deployment-oriented design and parameter selection. Conclusions are explicitly limited to the current geometry, mass distribution, and actuation strategy, and the workflow is organized for reproducibility through protocolized preprocessing and condition-level split control.
-	\end{abstract}
+The resulting platform--model package is validated against free-decay experiments without retuning and is then used to derive sensitivity-based operating guidance for the current configuration. All claims are explicitly limited to the studied platform geometry, mass distribution, buoyancy layout, and actuation strategy, and to the horizontal-launch to vertical-stabilization phase.
+\end{abstract}
 
-	%%Graphical abstract (optional)
-	\begin{graphicalabstract}
-		% \includegraphics{grabs}
-	\end{graphicalabstract}
+%%Graphical abstract (optional)
+\begin{graphicalabstract}
+  % \includegraphics{grabs}
+\end{graphicalabstract}
 
-	%%Research highlights (also often uploaded as a separate file during submission).
-	\begin{highlights}
-		\input{highlights_items}
-	\end{highlights}
+%%Research highlights (also often uploaded as a separate file during submission).
+\begin{highlights}
+  \input{highlights_items}
+\end{highlights}
 
-	\begin{keyword}
-		Underwater platform \sep Mission-oriented deployment \sep Free-decay identification \sep CFD evidence \sep Added mass \sep Permeability correction
-	\end{keyword}
+\begin{keyword}
+  Underwater platform \sep Mission-oriented deployment \sep Free-decay identification \sep CFD evidence \sep Added mass \sep Permeability correction
+\end{keyword}
 
 \end{frontmatter}
 
 %% \linenumbers  % Uncomment for review mode (requires lineno package above)
 
+% Keep nomenclature as a separate LaTeX asset (`sections/00a_nomenclature.tex`),
+% but do not place it in the main body flow for this build.
+% It can be inserted later during final submission assembly if needed.
+% \input{sections/00a_nomenclature}
+
 \input{sections/01_introduction}
-\input{sections/02_system_and_mission_scenario}
-\input{sections/03_anisotropic_permeability_corrected_dynamics}
-\input{sections/04_model_validation_against_free_decay_experiments}
-\input{sections/05_parametric_analysis_and_design_guidance}
-\input{sections/06_conclusions}
+\input{sections/02_platform_design_and_implementation}
+\input{sections/03_experimental_setup_and_data_governance}
+\input{sections/04_dynamic_model_and_hydrodynamic_closure}
+\input{sections/05_parameter_identification_pipeline}
+\input{sections/06_model_validation_against_free_decay_experiments}
+\input{sections/07_parametric_analysis_and_design_guidance}
+\input{sections/08_conclusions}
 
 \section*{Data availability}
 The data that support the findings of this study are available in a public

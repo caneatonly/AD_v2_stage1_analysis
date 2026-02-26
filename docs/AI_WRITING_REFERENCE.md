@@ -74,21 +74,34 @@ Correct narrative:
 
 Do not frame the paper as a generic claim that traditional platforms broadly fail in such transitions.
 
+### 3.1.1 Platform-First Spine (Frozen)
+
+The paper must read as an Ocean Engineering-style engineering story with **platform realization and method/evidence chain co-equal**, while **the platform is the narrative entry point**:
+
+- Mission scenario and success criterion (corner-reflector deployment; horizontal release with initial velocity; vertical working posture).
+- Platform engineering solution (design + fabrication/implementation + deployment workflow).
+- Experimental evidence program and data governance (free-decay protocol, instrumentation, and anti-leakage splits).
+- Interpretable reduced-order dynamics and closure logic (permeability-corrected inertial coupling; CFD as static closure evidence; damping from experiments).
+- Identification, validation, and bounded design guidance (no-retuning validation; discrepancy-aware operating guidance).
+
+Avoid an over-model-centric framing (e.g., “we propose a corrected model” as the main hook). The model and identification are essential, but they are presented as the **analysis and decision-support backbone for a purpose-built platform in a specific mission phase**.
+
 ### 3.2 Abstract Rules
 
 - Mention underwater corner-reflector deployment explicitly.
-- Present platform design and modeling as co-equal contributions.
-- Use qualitative performance wording only (avoid dense metrics in abstract).
+- Explicitly state that a mission-oriented platform was **designed and fabricated/implemented** (high-level only).
+- Present platform engineering and modeling/identification as co-equal contributions, with platform as the entry point.
+- Keep abstract high-level: qualitative performance wording only (avoid dense metrics and pipeline micro-details).
 - Keep abstract <= 250 words.
 - Avoid references in abstract unless unavoidable.
 
 ### 3.3 Introduction Structure (5-paragraph logic)
 
 1. Mission context and operational requirement
-2. Platform design rationale and engineering novelty
-3. Modeling gap and anisotropic permeability-corrected dynamics
-4. Validation chain and empirical evidence
-5. Contributions, scope boundaries, and roadmap
+2. Why mission constraints demand a purpose-built platform (engineering gap)
+3. Platform concept and realized system (what was built; what phase is targeted)
+4. Why modeling/identification is required for this platform and phase (evidence chain; CFD role bounded)
+5. Contributions, scope boundaries, and roadmap (paper spine)
 
 ### 3.4 Claim-to-Evidence Contract
 
@@ -105,6 +118,7 @@ Every high-level claim must map to a manuscript evidence object.
 
 ### 3.5 Writing Constraints
 
+- Avoid unverified ``literature gap'' absolutes (e.g., ``no prior work''). If a gap must be stated, use careful, evidence-consistent phrasing such as ``to our knowledge'' / ``limited dedicated reports'' and ensure the Introduction provides verifiable citations.
 - Do not imply universal generalization across all underwater platforms.
 - Do not expose mission-sensitive details beyond approved abstraction.
 - Keep symbols and sign conventions consistent with `sim_flip/src/conventions.py`.
@@ -131,11 +145,13 @@ Rules:
 | - | Nomenclature | `paper/sections/00a_nomenclature.md` | Draft complete |
 | 0 | Abstract | `paper/sections/00_abstract.md` | Draft complete |
 | 1 | Introduction | `paper/sections/01_introduction.md` | Draft complete |
-| 2 | Platform configuration and deployment scenario | `paper/sections/02_system_and_mission_scenario.md` | Draft complete |
-| 3 | Dynamic model development and parameter determination | `paper/sections/03_anisotropic_permeability_corrected_dynamics.md` | Draft complete |
-| 4 | Model validation against free-decay experiments | `paper/sections/04_model_validation_against_free_decay_experiments.md` | Skeleton |
-| 5 | Parametric analysis and design guidance | `paper/sections/05_parametric_analysis_and_design_guidance.md` | Skeleton |
-| 6 | Conclusions | `paper/sections/06_conclusions.md` | Draft |
+| 2 | Platform design and implementation | `paper/sections/02_platform_design_and_implementation.md` | Draft (needs detail expansion) |
+| 3 | Experimental setup and data governance | `paper/sections/03_experimental_setup_and_data_governance.md` | Draft (needs setup detail) |
+| 4 | Dynamic model and hydrodynamic closure | `paper/sections/04_dynamic_model_and_hydrodynamic_closure.md` | Draft complete |
+| 5 | Parameter identification and diagnostics | `paper/sections/05_parameter_identification_pipeline.md` | Draft (needs results/diagnostics) |
+| 6 | Model validation against free-decay experiments | `paper/sections/06_model_validation_against_free_decay_experiments.md` | Skeleton |
+| 7 | Parametric analysis and design guidance | `paper/sections/07_parametric_analysis_and_design_guidance.md` | Skeleton |
+| 8 | Conclusions | `paper/sections/08_conclusions.md` | Draft |
 
 Nomenclature placement policy:
 - In the final manuscript, place nomenclature before Introduction.
@@ -245,11 +261,11 @@ Use this checklist as a writing gate; do not duplicate detailed journal text sna
 
 ## 11. Near-Term Writing Priorities
 
-1. Complete Section 4 validation narrative and figures.
-2. Complete Section 5 sensitivity/design guidance with bounded claims.
-3. Tighten Conclusions with explicit limitations and future work.
-4. Replace placeholder bibliography entries with verified citations.
-5. Finalize submission end-matter (CRediT, data availability, acknowledgements, declarations).
+1. Expand Section 2 with platform-design/fabrication detail and Table 1.
+2. Expand Section 3 with experimental setup detail and Fig. 3 governance.
+3. Complete Section 6 validation narrative, figures, and Table 2.
+4. Complete Section 7 sensitivity/design guidance with bounded claims.
+5. Finalize end-matter and verified bibliography (CRediT, data availability, declarations).
 
 ## 12. Governance Change Log
 

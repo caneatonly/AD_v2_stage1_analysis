@@ -20,11 +20,13 @@ This directory contains manuscript sources and publication assets.
 - `00_abstract.md`
 - `00a_nomenclature.md`
 - `01_introduction.md`
-- `02_system_and_mission_scenario.md`
-- `03_anisotropic_permeability_corrected_dynamics.md`
-- `04_model_validation_against_free_decay_experiments.md`
-- `05_parametric_analysis_and_design_guidance.md`
-- `06_conclusions.md`
+- `02_platform_design_and_implementation.md`
+- `03_experimental_setup_and_data_governance.md`
+- `04_dynamic_model_and_hydrodynamic_closure.md`
+- `05_parameter_identification_pipeline.md`
+- `06_model_validation_against_free_decay_experiments.md`
+- `07_parametric_analysis_and_design_guidance.md`
+- `08_conclusions.md`
 
 ## Collaboration Entry Points (canonical docs)
 
