@@ -8,6 +8,13 @@ paper/latex/out/
 # AI edit tool backups
 *.bak[0-9]*
 
+# Claude harness runtime files
+.harness-active
+harness-progress.txt
+harness-tasks.json
+harness-tasks.json.bak
+harness-tasks.json.tmp
+
 # LaTeX intermediate files
 indent.log
 *.aux
