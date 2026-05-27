@@ -286,7 +286,7 @@ class CfdInterpolator:
 def default_cfd_table_path() -> Path:
     # sim_flip/src/cfd_table.py -> sim_flip/ -> data/
     pkg_root = Path(__file__).resolve().parents[1]
-    return pkg_root / "data" / "cfd_table_clean.csv"
+    return pkg_root / "data" / "coefficients_final_lookup.csv"
 
 
 def load_cfd_table(csv_path: Union[str, Path]) -> CfdTable:

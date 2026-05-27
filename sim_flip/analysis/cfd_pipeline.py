@@ -149,7 +149,7 @@ def run_cfd_review_pipeline(
         raise FileNotFoundError(str(src))
 
     root = sim_flip_root()
-    table_path = Path(out_table_path) if out_table_path else root / "data" / "cfd_table_clean.csv"
+    table_path = Path(out_table_path) if out_table_path else root / "results" / "cfd_review_table_raw_monitor.csv"
     report_path = Path(out_report_path) if out_report_path else root / "results" / "cfd_review_report.json"
     fig_dir = Path(out_figure_dir) if out_figure_dir else root / "results" / "cfd_figures"
     fig_dir.mkdir(parents=True, exist_ok=True)

@@ -1,6 +1,6 @@
 # Project Memory: Ocean Engineering Transition-Stage Study
 
-Last updated: 2026-05-25
+Last updated: 2026-05-27
 
 ## Primary Working Documents
 
@@ -198,7 +198,10 @@ Checked on 2026-05-25:
 1. `sim_flip/src/dynamics.py` already uses the hybrid-style pitch structure:
    - `q_dot = (M_cfd + M_damp + M_bg + M_cable + M_thruster) / eff.I_y`;
    - no analytical `(m_z-m_x) u w` pitch term is present in this active equation.
-2. `sim_flip/data/cfd_table_clean.csv` exists and provides the static AoA coefficient table used by the current ODE.
+2. `sim_flip/data/coefficients_final_lookup.csv` is now the runtime default static AoA lookup table.
+   - It is generated from `static_aoa_data/Hydrodynamic_Coefficients_Corrected.csv` by `sim_flip/scripts/build_static_aoa_final_lookup.py`.
+   - It preserves `alpha_deg,Cx,Cz,Cm` for the ODE and adds source, monitor, residual, raw-std, processing-status, and provenance fields for Section 4.2 evidence tracking.
+   - `sim_flip/data/cfd_table_clean.csv` is deprecated as a historical intermediate table.
 3. Three legacy segment CSVs still exist under `sim_flip/data/`.
 4. The fixed manifest pipeline is still not populated:
    - `sim_flip/configs/experiment_manifest.csv` contains only the header;
@@ -222,7 +225,7 @@ Last known test status from the previous audit: `python -m unittest discover -s 
 | M0 | v2 storyline locked | Done | Obsidian `00_总控\主线总控-latest.md`, `论文idea梳理 5.24.md` | old permeability route no longer used in manuscript |
 | M1 | Platform/problem narrative | Partly done | `drafts/main5.8.pdf`, Section 2 notes | source images and final captions organized |
 | M2 | Hybrid model equation | Partly done | `sim_flip/src/dynamics.py`, v2 controller notes | code, symbols, and Section 3 wording aligned |
-| M3 | Static CFD AoA maps | Partly done | `sim_flip/data/cfd_table_clean.csv` | CFD source cases, mesh/time-step evidence, coefficient figures |
+| M3 | Static CFD AoA maps | Mostly closed | `sim_flip/data/coefficients_final_lookup.csv`; `sim_flip/results/static_aoa_review/coefficients_final_lookup_metadata.json` | complete Fig. 8/Table 4 packaging; resolve or document missing `Residuals_15.csv` |
 | M4 | Translational effective inertia `m_x,m_z` | Not closed | requires CFD virtual captive / forced-acceleration tests | `m_x,m_z` values with uncertainty or sensitivity justification |
 | M5 | Pitch free-decay identification | Needs refactor | old scripts still identify `mu_theta` | direct `I_theta_eff,d_q,d_q_abs` output |
 | M6 | Manifest-driven pipeline | Not populated | manifest and derived/results folders empty | reproducible outputs under `sim_flip/results/` |

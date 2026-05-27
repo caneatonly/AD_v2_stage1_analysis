@@ -1,0 +1,35 @@
+{
+  "generated_on": "2026-05-27",
+  "source_dir": "C:\\AD_v2_stage1_analysis\\static_aoa_data",
+  "source_corrected_csv": "C:\\AD_v2_stage1_analysis\\static_aoa_data\\Hydrodynamic_Coefficients_Corrected.csv",
+  "output_csv": "C:\\AD_v2_stage1_analysis\\sim_flip\\data\\coefficients_final_lookup.csv",
+  "n_angles": 37,
+  "alpha_range_deg": [
+    0,
+    180
+  ],
+  "alpha_step_deg": 5,
+  "monitor_average_window": 500,
+  "runtime_required_columns": [
+    "alpha_deg",
+    "Cx",
+    "Cz",
+    "Cm"
+  ],
+  "extra_qc_columns": [
+    "source_file",
+    "residual_file",
+    "Cx_raw_std",
+    "Cz_raw_std",
+    "Cm_raw_std"
+  ],
+  "missing_residual_files": [
+    "Residuals_15.csv"
+  ],
+  "deprecated_table": "sim_flip/data/cfd_table_clean.csv",
+  "model_role": "quasi-static C_X(alpha), C_Z(alpha), C_m(alpha) lookup only",
+  "not_for": [
+    "added mass identification",
+    "damping identification"
+  ]
+}

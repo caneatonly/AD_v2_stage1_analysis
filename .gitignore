@@ -1,9 +1,14 @@
-figures/
+figures/identify/
 __pycache__/
 .gitkeep
 data/
 outputs/
 paper/latex/out/
+
+# Version the final static AoA CFD lookup used by the runtime model.
+!sim_flip/data/
+sim_flip/data/*
+!sim_flip/data/coefficients_final_lookup.csv
 
 # AI edit tool backups
 *.bak[0-9]*
@@ -42,3 +47,5 @@ paper/figures/*
 !paper/figures/FIGURE_REQUIREMENTS.md
 downloads/
 .claude/
+tmp/
+static_aoa_data/
