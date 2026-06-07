@@ -275,3 +275,49 @@ Avoid in the final manuscript:
 - internal-water participation factor;
 - `mu_x`, `mu_z`, `mu_theta`;
 - unverified numerical conclusions.
+
+## 2026-06-07 Section 3.3 Writing Decisions
+
+Current writing focus: Section 3.3, now framed as `Source-partitioned hydrodynamic closure for the transition-stage 3DOF model`.
+
+Key decisions from the writing discussion:
+
+1. Use `Source-partitioned hydrodynamic closure for the transition-stage 3DOF model` rather than `Source-partitioned 3DOF model for transition stage`.
+   - The model itself is still a Fossen-based 3DOF transition model.
+   - What is source-partitioned is the hydrodynamic / parameter closure, not the full governing model.
+2. Avoid using `AoA` before definition.
+   - In main prose, first write `angle of attack` or `angle-of-attack-dependent`.
+   - Define `\alpha` in the Section 3 coordinate/state definition area, after `u,w,q,\theta` and the body-fixed frame are introduced:
+     `V=\sqrt{u^2+w^2}`, `\alpha=\operatorname{atan2}(w,u)`, and `Q=\tfrac{1}{2}\rho V^2`.
+   - Section 4 should later state that the static CFD sweep uses the same body-frame angle-of-attack convention.
+3. The Section 3.3 opening should keep the constant-coefficient model as a fair low-order reference.
+   - Do not make the paragraph sound like an attack on the baseline.
+   - Do not introduce the Munk-type term too early or too heavily in the opening paragraph.
+   - The opening should motivate closure mismatch through the wide variation of instantaneous angle of attack and speed during passive reorientation.
+4. Candidate closing sentence for the opening paragraph:
+   - `Accordingly, we propose a source-partitioned hydrodynamic closure within the 3DOF Fossen framework, in which the conventional constant hydrodynamic derivatives are replaced by angle-of-attack-dependent load coefficients and separately identified effective-inertia terms.`
+5. In the source-allocation paragraph, use first-person method language where appropriate, but keep the paragraph about modeling logic rather than Section 4 execution.
+   - Do not write as if the AoA maps are already being constructed in Section 3.
+   - Prefer: `we use ... to represent`, `we identify ... from`, `we estimate ... from`.
+   - Keep CFD map construction and interpolation details for Section 4.
+6. Prefer `CFD-derived coefficient maps`, `angle-of-attack-dependent coefficient functions`, or `coefficient maps`.
+   - Avoid the ambiguous shorthand `CFD maps` alone in formal manuscript prose.
+7. The explanation after the equation/table should be concise and mechanistic.
+   - Its purpose is to explain why the closure uses `QALC_m(\alpha)` in place of the analytical Munk-type term.
+   - It should not drift into baseline/ablation logistics unless the surrounding paragraph specifically discusses model comparison.
+   - Candidate text:
+     `Among these allocations, the pitching-moment closure is the key modification from the constant-coefficient model. The Munk-type term (m_z-m_x)uw is an inviscid, constant-coefficient approximation of the moment induced by translational motion, whereas the present transition involves large-incidence flow around the actual fairing-attached geometry. We therefore represent this quasi-steady translational pitching moment by QALC_m(\alpha), so that the pitch moment is closed with the same angle-of-attack-dependent coefficient description as the surge and heave loads. Rate-dependent residual pitch effects are treated separately through the free-decay damping terms.`
+8. The quasi-steady paragraph should define the approximation and defer the validity check to results.
+   - Do not claim that `k_q` is already sufficiently small unless the result artifact exists.
+   - Candidate text:
+     `The use of C_X(\alpha), C_Z(\alpha), and C_m(\alpha) also defines the quasi-steady nature of the load closure. These coefficients represent the steady oblique-flow response at prescribed angles of attack, while the ODE model evaluates them at the instantaneous \alpha and V along the transition trajectory. The approximation is therefore appropriate only when the platform rotation is slow relative to the convective time scale of the incoming flow; wake-memory and phase-lag effects associated with rapid separated-flow evolution are not resolved by this representation. We quantify this condition using the reduced pitch rate k_q=|q|L/(2V), whose distribution along the transition trajectories is reported in Section~\ref{sec:results}.`
+9. The current `Table~\ref{tab:term_allocation}` draft has a structural problem.
+   - The header has four columns: `Model term`, `Reference closure`, `Proposed closure`, and `Evidence source`.
+   - The first three rows must also have four cells.
+   - Example row structure:
+     `Surge force & Constant-coefficient damping, -(d_u+d_{u|u|}|u|)u & AoA map, QAC_X(\alpha) & Static AoA CFD \\`
+
+Status:
+
+- These are writing decisions and manuscript-text candidates; `draft/section3.tex` has not yet been edited in this memory update.
+- Final manuscript prose should still be checked by PaperSpine after Section 3.3 is edited and after equation/table consistency checks are run.

@@ -49,3 +49,4 @@ downloads/
 .claude/
 tmp/
 static_aoa_data/
+paper_rewriting_output/
