@@ -50,3 +50,6 @@ downloads/
 tmp/
 static_aoa_data/
 paper_rewriting_output/
+mx_mz_calc/figures
+mx_mz_calc/mx_data
+mx_mz_calc/mz_data
